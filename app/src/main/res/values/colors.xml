@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Teal 500 for action bar -->
+    <color name="primary">#FF009688</color>
+
+    <!-- Teal 700 for status bar and navigation bar -->
+    <color name="primary_dark">#00796B</color>
+
+    <!-- Blue A200 for accents like floating action button -->
+    <color name="accent">#448AFF</color>
+
+    <color name="white">#FFFFFF</color>
+</resources>
