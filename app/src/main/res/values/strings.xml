@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">zwliew_Kernel Updater</string>
+    <string name="app_name">zK Updater</string>
     <string name="app_name_simple">zK Updater</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="unknown_val">Unknown</string>
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
 
     <string name="about_author">About me</string>
-    <string name="about_author_summary">zwliew\nG+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
+    <string name="about_author_name">zwliew</string>
+    <string name="about_author_summary">G+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
+
+    <!-- Updater Fragment -->
+    <string name="updater_title">zK Updater</string>
 
     <!-- Current version -->
     <string name="updater_cur_title">Current version</string>
 
     <!-- Newest version -->
     <string name="updater_new_title">Newest version</string>
-    <string name="updater_new_changelog">CHANGELOG</string>
+    <string name="updater_new_changelog">Changelog</string>
 
-    <!-- Check Interval -->
-    <string name="updater_interval_title">Check Interval</string>
-    <string name="updater_interval_pref">com.zwliew.zwliewkernelmaster.updateinterval</string>
+    <!-- About Fragment -->
+    <string name="about_title">About</string>
+    <string name="root_status">Root</string>
+    <string name="busybox_status">Busybox</string>
 </resources>

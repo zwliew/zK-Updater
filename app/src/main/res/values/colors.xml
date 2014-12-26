@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Teal 500 for action bar -->
-    <color name="primary">#FF009688</color>
+    <color name="primary">#009688</color>
 
     <!-- Teal 700 for status bar and navigation bar -->
     <color name="primary_dark">#00796B</color>
 
     <!-- Blue A200 for accents like floating action button -->
     <color name="accent">#448AFF</color>
+    <color name="accent_light">#82B1FF</color>
 
-    <color name="white">#FFFFFF</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+    <color name="blue">#2196F3</color>
+    <color name="orange">#FF9800</color>
+
+    <color name="myDrawerBackground">#F2F2F2</color>
+    <color name="selected_gray">#FFDBDBDB</color>
+
+    <color name="primary_fab">#3f51b5</color>
+    <color name="primary_pressed">#303f9f</color>
+    <color name="ripple">#ff80ab</color>
 </resources>
