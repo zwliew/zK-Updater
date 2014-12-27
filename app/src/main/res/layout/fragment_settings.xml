@@ -63,7 +63,6 @@
             android:text="@string/auto_check_title" />
 
         <TextView
-            android:id="@+id/textView2"
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
