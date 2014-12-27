@@ -1,6 +1,8 @@
 package zwliew.kernel;
 
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -20,12 +22,7 @@ import zwliew.kernel.fragments.UpdaterFragment;
  */
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
-    public static final String ARG_SECTION_NUMBER = "section_number";
-    public static boolean isBusybox = false;
-    public static boolean isRoot = false;
-
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
          * which is pretty useful. You can also use a normal Navigation Drawer with it,
          * but for that you should consult API details as it's not the purpose of this app.
          */
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -53,18 +50,25 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             Toast.makeText(getApplicationContext(),
                     "Not rooted! Some functions won't work.",
                     Toast.LENGTH_SHORT).show();
-            isRoot = false;
+            Store.isRoot = false;
         } else {
-            isRoot = true;
+            Store.isRoot = true;
 
             if (!Helpers.checkBusybox()) {
                 Toast.makeText(getApplicationContext(),
                         "No busybox! Some functions won't work.",
                         Toast.LENGTH_SHORT).show();
-                isBusybox = false;
+                Store.isBusybox = false;
             } else {
-                isBusybox = true;
+                Store.isBusybox = true;
             }
+        }
+
+        SharedPreferences sharedPref =
+                this.getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
+
+        if (sharedPref.getBoolean(Store.AUTO_CHECK, true)) {
+            BootReceiver.scheduleAlarms(this);
         }
     }
 
