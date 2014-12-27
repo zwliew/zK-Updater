@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zwliew.kernel.BootReceiver;
 import zwliew.kernel.MainActivity;
@@ -46,6 +47,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+        ButterKnife.inject(this, rootView);
 
         TextView busyboxTV = (TextView) rootView.findViewById(R.id.busybox_status);
         TextView rootTV = (TextView) rootView.findViewById(R.id.root_status);
