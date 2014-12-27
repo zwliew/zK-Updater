@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.OnClick;
 import zwliew.kernel.BootReceiver;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
@@ -24,6 +24,9 @@ import zwliew.kernel.Store;
  * Created by ZhaoWei on 23/12/2014.
  */
 public class SettingsFragment extends Fragment {
+
+    private CheckBox autoCheckCB;
+
     public static SettingsFragment newInstance(int sectionNumber) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -46,8 +49,7 @@ public class SettingsFragment extends Fragment {
 
         TextView busyboxTV = (TextView) rootView.findViewById(R.id.busybox_status);
         TextView rootTV = (TextView) rootView.findViewById(R.id.root_status);
-        LinearLayout aboutTV = (LinearLayout) rootView.findViewById(R.id.about);
-        final CheckBox autoCheckCB = (CheckBox) rootView.findViewById(R.id.auto_check);
+        autoCheckCB = (CheckBox) rootView.findViewById(R.id.auto_check);
         RelativeLayout autoCheckTV = (RelativeLayout) rootView.findViewById(R.id.auto_check_layout);
 
         SharedPreferences sharedPref =
@@ -63,15 +65,6 @@ public class SettingsFragment extends Fragment {
             rootTV.setText("Available");
         else
             rootTV.setText("Unavailable");
-
-        aboutTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://plus.google.com/+ZhaoWeiLiew"));
-                startActivity(i);
-            }
-        });
 
         autoCheckTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +85,13 @@ public class SettingsFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @OnClick(R.id.about)
+    void goToProfile() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse("https://plus.google.com/+ZhaoWeiLiew"));
+        startActivity(i);
     }
 
 }
