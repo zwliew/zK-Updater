@@ -17,9 +17,9 @@ import zwliew.kernel.R;
 /**
  * Created by ZhaoWei on 23/12/2014.
  */
-public class AboutFragment extends Fragment {
-    public static AboutFragment newInstance(int sectionNumber) {
-        AboutFragment fragment = new AboutFragment();
+public class SettingsFragment extends Fragment {
+    public static SettingsFragment newInstance(int sectionNumber) {
+        SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
         args.putInt(MainActivity.ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -36,7 +36,7 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_about, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         TextView busyboxTV = (TextView) rootView.findViewById(R.id.busybox_status);
         TextView rootTV = (TextView) rootView.findViewById(R.id.root_status);

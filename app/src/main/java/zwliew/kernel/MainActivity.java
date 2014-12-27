@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.androguide.cmdprocessor.CMDProcessor;
 import com.androguide.cmdprocessor.Helpers;
 
-import zwliew.kernel.fragments.AboutFragment;
+import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
 
 /**
@@ -21,8 +21,8 @@ import zwliew.kernel.fragments.UpdaterFragment;
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     public static final String ARG_SECTION_NUMBER = "section_number";
-    public static boolean isBusybox = true;
-    public static boolean isRoot = true;
+    public static boolean isBusybox = false;
+    public static boolean isRoot = false;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
@@ -54,14 +54,18 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     "Not rooted! Some functions won't work.",
                     Toast.LENGTH_SHORT).show();
             isRoot = false;
-        } else if (!Helpers.checkBusybox()) {
-            Toast.makeText(getApplicationContext(),
-                    "No busybox! Some functions won't work.",
-                    Toast.LENGTH_SHORT).show();
-            isBusybox = false;
+        } else {
+            isRoot = true;
+
+            if (!Helpers.checkBusybox()) {
+                Toast.makeText(getApplicationContext(),
+                        "No busybox! Some functions won't work.",
+                        Toast.LENGTH_SHORT).show();
+                isBusybox = false;
+            } else {
+                isBusybox = true;
+            }
         }
-
-
     }
 
     @Override
@@ -84,7 +88,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 break;
             case 1:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, AboutFragment.newInstance(position))
+                        .replace(R.id.container, SettingsFragment.newInstance(position))
                         .commit();
                 break;
             default:
@@ -102,7 +106,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             case 1:
                 title = (TextView) findViewById(R.id.toolbar_title);
                 if (title != null)
-                    title.setText(getString(R.string.about_title));
+                    title.setText(getString(R.string.settings_title));
                 break;
             default:
                 break;

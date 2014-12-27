@@ -9,10 +9,6 @@
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
 
-    <string name="about_author">About me</string>
-    <string name="about_author_name">zwliew</string>
-    <string name="about_author_summary">G+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
-
     <!-- Updater Fragment -->
     <string name="updater_title">zK Updater</string>
 
@@ -24,7 +20,11 @@
     <string name="updater_new_changelog">Changelog</string>
 
     <!-- About Fragment -->
-    <string name="about_title">About</string>
+    <string name="settings_title">Settings</string>
     <string name="root_status">Root</string>
     <string name="busybox_status">Busybox</string>
+
+    <string name="about_author">About me</string>
+    <string name="about_author_name">zwliew</string>
+    <string name="about_author_summary">b saG+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
 </resources>
