@@ -112,6 +112,13 @@ public class UpdaterFragment extends Fragment {
             }
         });
 
+        swipeLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeLayout.setRefreshing(true);
+            }
+        });
+
         curVerTV = (TextView) rootView.findViewById(R.id.updater_cur_desc);
         newVerTV = (TextView) rootView.findViewById(R.id.updater_new_desc);
 
@@ -174,7 +181,7 @@ public class UpdaterFragment extends Fragment {
     @OnClick(R.id.updater_cur_info)
     void curInfo() {
         new MaterialDialog.Builder(getActivity())
-                .title("Current Kernel")
+                .title("Current version")
                 .content("This is the current version of zwliew_Kernel on your device.")
                 .icon(getResources().getDrawable(R.drawable.ic_info))
                 .show();
@@ -183,7 +190,7 @@ public class UpdaterFragment extends Fragment {
     @OnClick(R.id.updater_new_info)
     void newInfo() {
         new MaterialDialog.Builder(getActivity())
-                .title("Newest Kernel")
+                .title("Newest version")
                 .content("This is the latest available" +
                         " version of zwliew_Kernel for your device.")
                 .icon(getResources().getDrawable(R.drawable.ic_info))
