@@ -61,7 +61,7 @@ public class UpdaterFragment extends Fragment {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
-    
+
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
 
@@ -201,17 +201,6 @@ public class UpdaterFragment extends Fragment {
 
     @OnClick(R.id.updater_support_donate)
     void donateMe() {
-        if (MainActivity.mHelper == null) {
-            MainActivity.mHelper = new IabHelper(getActivity(),
-                    Store.base64EncodedPublicKey0 + Store.base64EncodedPublicKey1);
-            MainActivity.mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
-                    if (!result.isSuccess())
-                        Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
-                }
-            });
-        }
-
         new MaterialDialog.Builder(getActivity())
                 .title(getString(R.string.updater_support_donate))
                 .items(getResources().getStringArray(R.array.donate_items))

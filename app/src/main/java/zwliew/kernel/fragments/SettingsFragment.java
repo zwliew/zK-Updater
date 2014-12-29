@@ -5,8 +5,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -80,10 +78,7 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putBoolean(Store.AUTO_CHECK, autoCheckCB.isChecked()).apply();
 
-                NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
-                        .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-                if (networkInfo != null && networkInfo.isConnected() &&
-                        autoCheckCB.isChecked())
+                if (autoCheckCB.isChecked())
                     BootReceiver.scheduleAlarms(getActivity());
 
             }

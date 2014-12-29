@@ -4,8 +4,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -76,25 +74,19 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         SharedPreferences sharedPref =
                 this.getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
 
-        NetworkInfo networkInfo = ((ConnectivityManager) this
-                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        if (sharedPref.getBoolean(Store.AUTO_CHECK, true))
+            BootReceiver.scheduleAlarms(this);
 
-
-        if (networkInfo != null && networkInfo.isConnected()) {
-            if (sharedPref.getBoolean(Store.AUTO_CHECK, true))
-                BootReceiver.scheduleAlarms(this);
-
-            mHelper = new IabHelper(this,
-                    Store.base64EncodedPublicKey0 + Store.base64EncodedPublicKey1);
-            mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
-                    if (!result.isSuccess())
-                        Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
-                }
-            });
-        }
-
+        mHelper = new IabHelper(this,
+                Store.base64EncodedPublicKey0 + Store.base64EncodedPublicKey1);
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess())
+                    Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
+            }
+        });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
