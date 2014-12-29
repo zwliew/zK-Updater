@@ -1,13 +1,12 @@
 package zwliew.kernel.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.MaterialDialogCompat;
 import com.androguide.cmdprocessor.CMDProcessor;
 
 import java.io.BufferedReader;
@@ -41,15 +40,19 @@ import butterknife.OnClick;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
+import zwliew.kernel.util.IabHelper;
+import zwliew.kernel.util.IabResult;
+import zwliew.kernel.util.Purchase;
 
 public class UpdaterFragment extends Fragment {
 
     private static final String DEVICE_MODEL = Build.DEVICE;
-    private static final String SERVER_URL = "http://128.199.239.125/";
-    private static final String LATEST_RELEASE_URL = SERVER_URL + DEVICE_MODEL + "/appfiles/latest";
-    private final String DOWNLOAD_URL = SERVER_URL + DEVICE_MODEL
+    private static final String LATEST_RELEASE_URL = Store.SERVER_URL +
+            DEVICE_MODEL + "/appfiles/latest";
+    private final String DOWNLOAD_URL = Store.SERVER_URL + DEVICE_MODEL
             + "/releases/zwliew_Kernel-" + DEVICE_MODEL + "-";
-    private final String CHANGELOG_URL = SERVER_URL + DEVICE_MODEL + "/appfiles/changelog.html";
+    private final String CHANGELOG_URL = Store.SERVER_URL +
+            DEVICE_MODEL + "/appfiles/changelog.html";
 
     private static String latestRelease;
     private static TextView newVerTV;
@@ -58,6 +61,31 @@ public class UpdaterFragment extends Fragment {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
+
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+
+            if (MainActivity.mHelper == null)
+                return;
+
+            if (result.isFailure())
+                Log.d(Store.TAG, "Error while consuming: " + result);
+        }
+    };
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            if (MainActivity.mHelper == null)
+                return;
+
+            if (result.isFailure()) {
+                Log.d(Store.TAG, "Error purchasing: " + result);
+                return;
+            }
+
+            MainActivity.mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+        }
+    };
 
     public static UpdaterFragment newInstance(int sectionNumber) {
         UpdaterFragment fragment = new UpdaterFragment();
@@ -85,20 +113,31 @@ public class UpdaterFragment extends Fragment {
         editor = sharedPreferences.edit();
 
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeLayout.setColorScheme(R.color.green,
+        swipeLayout.setColorSchemeResources(R.color.green,
                 R.color.red,
                 R.color.blue,
                 R.color.orange);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
                 if (Store.isBusybox)
                     new UpdaterFragment.getKernelInfo().execute();
-                new UpdaterFragment.getURLContent().execute();
+
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    new UpdaterFragment.getURLContent().execute();
+                } else {
+                    swipeLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(),
+                            getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                }
 
                 if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
                         sharedPreferences.getInt(Store.NEW_KERNEL, 0)
-                        && sharedPreferences.getInt(Store.CUR_KERNEL, 0) != 0) {
+                        && sharedPreferences.getInt(Store.CUR_KERNEL, 0) > 0
+                        && sharedPreferences.getInt(Store.NEW_KERNEL, 0) > 0) {
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getActivity())
                                     .setSmallIcon(R.drawable.ic_new_release)
@@ -122,9 +161,24 @@ public class UpdaterFragment extends Fragment {
         curVerTV = (TextView) rootView.findViewById(R.id.updater_cur_desc);
         newVerTV = (TextView) rootView.findViewById(R.id.updater_new_desc);
 
+        NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
         if (Store.isBusybox)
             new UpdaterFragment.getKernelInfo().execute();
-        new UpdaterFragment.getURLContent().execute();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new UpdaterFragment.getURLContent().execute();
+        } else {
+            swipeLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeLayout.setRefreshing(false);
+                }
+            });
+            Toast.makeText(getActivity(),
+                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+        }
 
         if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
                 sharedPreferences.getInt(Store.NEW_KERNEL, 0)
@@ -144,18 +198,86 @@ public class UpdaterFragment extends Fragment {
 
     }
 
+    @OnClick(R.id.updater_support_donate)
+    void donateMe() {
+        String[] donateItems = getResources().getStringArray(R.array.donate_items);
+        donateItems[0] += Store.coffeePrice;
+        donateItems[1] += Store.mcdonaldsPrice;
+        donateItems[2] += Store.busPrice;
+        donateItems[3] += Store.electricityPrice;
+        new MaterialDialog.Builder(getActivity())
+                .title(getString(R.string.updater_support_donate))
+                .items(donateItems)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog,
+                                            View view, int which, CharSequence text) {
+                        switch (which) {
+                            case 0:
+                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
+                                        Store.SKU_COFFEE, Store.RC_REQUEST,
+                                        mPurchaseFinishedListener, Store.PAYLOAD + "a");
+                                break;
+                            case 1:
+                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
+                                        Store.SKU_MCDONALDS, Store.RC_REQUEST,
+                                        mPurchaseFinishedListener, Store.PAYLOAD + "s");
+                                break;
+                            case 2:
+                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
+                                        Store.SKU_BUS, Store.RC_REQUEST,
+                                        mPurchaseFinishedListener, Store.PAYLOAD + "d");
+                                break;
+                            case 3:
+                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
+                                        Store.SKU_ELECTRICITY, Store.RC_REQUEST,
+                                        mPurchaseFinishedListener, Store.PAYLOAD + "f");
+                                break;
+                            default:
+                                break;
+
+                        }
+
+                    }
+                })
+                .positiveText(android.R.string.ok)
+                .show();
+    }
+
+    @OnClick(R.id.updater_support_share)
+    void shareKernel() {
+        Intent shareIntent = new Intent()
+                .setAction(android.content.Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_title))
+                .putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_desc));
+
+        if (shareIntent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivity(Intent.createChooser(shareIntent,
+                    getResources().getString(R.string.share_chooser_title)));
+        else
+            Toast.makeText(getActivity(), R.string.app_not_available, Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @OnClick(R.id.updater_support_info)
+    void supportInfo() {
+        new MaterialDialog.Builder(getActivity())
+                .title(getString(R.string.updater_support_title))
+                .content(getString(R.string.updater_support_info))
+                .icon(getResources().getDrawable(R.drawable.ic_info))
+                .show();
+    }
+
     @OnClick(R.id.updater_new_log)
     void viewLog() {
-        ConnectivityManager connMgr =
-                (ConnectivityManager) getActivity()
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-            alert.setTitle("Changelog");
-            WebView wv = new WebView(getActivity());
-            wv.loadUrl(CHANGELOG_URL);
-            wv.setWebViewClient(new WebViewClient() {
+            WebView webView = new WebView(getActivity());
+            webView.loadUrl(CHANGELOG_URL);
+            webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     view.loadUrl(url);
@@ -164,25 +286,21 @@ public class UpdaterFragment extends Fragment {
                 }
             });
 
-            alert.setView(wv);
-            alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            alert.show();
+            new MaterialDialog.Builder(getActivity())
+                    .title(getString(R.string.updater_new_changelog))
+                    .customView(webView)
+                    .show();
         } else {
             Toast.makeText(getActivity(),
-                    "No network connection", Toast.LENGTH_SHORT).show();
+                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
     }
 
     @OnClick(R.id.updater_cur_info)
     void curInfo() {
         new MaterialDialog.Builder(getActivity())
-                .title("Current version")
-                .content("This is the current version of zwliew_Kernel on your device.")
+                .title(getString(R.string.updater_cur_title))
+                .content(getString(R.string.updater_cur_info))
                 .icon(getResources().getDrawable(R.drawable.ic_info))
                 .show();
     }
@@ -190,19 +308,16 @@ public class UpdaterFragment extends Fragment {
     @OnClick(R.id.updater_new_info)
     void newInfo() {
         new MaterialDialog.Builder(getActivity())
-                .title("Newest version")
-                .content("This is the latest available" +
-                        " version of zwliew_Kernel for your device.")
+                .title(getString(R.string.updater_new_title))
+                .content(getString(R.string.updater_new_info))
                 .icon(getResources().getDrawable(R.drawable.ic_info))
                 .show();
     }
 
     @OnClick(R.id.download_button)
     void downloadZip() {
-        ConnectivityManager connMgr =
-                (ConnectivityManager) getActivity()
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             Uri uri = Uri.parse(DOWNLOAD_URL + latestRelease + ".zip");
             DownloadManager.Request r = new DownloadManager.Request(uri);
@@ -217,46 +332,38 @@ public class UpdaterFragment extends Fragment {
             dm.enqueue(r);
 
             if (Store.isRoot) {
-                MaterialDialogCompat.Builder builder =
-                        new MaterialDialogCompat.Builder(getActivity());
-                builder.setMessage("Do you want to reboot to recovery? ONLY select once the " +
-                        "download is fully completed.")
-                        .setTitle("Reboot recovery?")
-                        .setPositiveButton(android.R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // Reboot if user pressed "OK"
-                                        ProgressDialog progress =
-                                                new ProgressDialog(getActivity());
-                                        progress.setMessage("Rebooting to recovery");
-                                        progress.setIndeterminate(true);
-                                        progress.setCancelable(false);
-                                        progress.show();
+                new MaterialDialog.Builder(getActivity())
+                        .content(getString(R.string.confirm_recovery_desc))
+                        .title(getString(R.string.confirm_recovery_title))
+                        .positiveText(android.R.string.ok)
+                        .negativeText(android.R.string.cancel)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                ProgressDialog progress =
+                                        new ProgressDialog(getActivity());
+                                progress.setMessage(getString(R.string.progress_recovery));
+                                progress.setIndeterminate(true);
+                                progress.setCancelable(false);
+                                progress.show();
 
-                                        // Start reboot
-                                        new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                // Reboot
-                                                CMDProcessor.runSuCommand("reboot recovery");
-                                            }
-                                        }).start();
+                                // Start reboot
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Reboot
+                                        CMDProcessor.runSuCommand(Store.REBOOT_RECOVERY_CMD);
                                     }
-                                })
-                        .setNegativeButton(android.R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // Just cancel if user pressed "Cancel"
-                                    }
-                                })
-                        .create()
+                                }).start();
+                            }
+                        })
                         .show();
             }
 
 
         } else {
             Toast.makeText(getActivity(),
-                    "No network connection", Toast.LENGTH_SHORT).show();
+                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -306,7 +413,7 @@ public class UpdaterFragment extends Fragment {
         @Override
         protected String doInBackground(Void... params) {
             String[] version = new String[2];
-            version[0] = CMDProcessor.runShellCommand("uname -r").getStdout();
+            version[0] = CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout();
             version[1] = String.valueOf(version[0].charAt(23));
             version[0] = String.valueOf(version[0].charAt(22));
 

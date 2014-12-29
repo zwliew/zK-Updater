@@ -15,10 +15,6 @@ public class NavigationItem {
         return mText;
     }
 
-    public void setText(String text) {
-        mText = text;
-    }
-
     public Drawable getDrawable() {
         return mDrawable;
     }

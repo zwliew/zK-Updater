@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,9 +24,6 @@ import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
 
-/**
- * Created by ZhaoWei on 23/12/2014.
- */
 public class SettingsFragment extends Fragment {
 
     private CheckBox autoCheckCB;
@@ -81,9 +81,15 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putBoolean(Store.AUTO_CHECK, autoCheckCB.isChecked()).apply();
 
-                if (autoCheckCB.isChecked()) {
+                NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected() &&
+                        autoCheckCB.isChecked())
                     BootReceiver.scheduleAlarms(getActivity());
-                }
+                else
+                    Toast.makeText(getActivity(),
+                            getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+
             }
         });
         return rootView;

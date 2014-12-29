@@ -1,22 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">zK Updater</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="unknown_val">Unknown</string>
+
+    <!-- Navigation drawer -->
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
 
+    <!-- Error -->
+    <string name="unknown_val">Unknown</string>
+    <string name="no_connection">No connection</string>
+    <string name="app_not_available">App not available</string>
+
+    <!-- Recovery -->
+    <string name="confirm_recovery_title">Reboot recovery?</string>
+    <string name="confirm_recovery_desc">Do you want to reboot to recovery? ONLY select once the download is fully completed.</string>
+    <string name="progress_recovery">Rebooting to recovery</string>
+
     <!-- Updater Fragment -->
     <string name="updater_title">zK Updater</string>
+    <string name="retry_check">Retry</string>
 
     <!-- Current version -->
     <string name="updater_cur_title">Current version</string>
+    <string name="updater_cur_info">This is the current version of zwliew_Kernel on your device.</string>
 
     <!-- Newest version -->
     <string name="updater_new_title">Newest version</string>
     <string name="updater_new_changelog">Changelog</string>
+    <string name="updater_new_info">This is the latest available version of zwliew_Kernel for your device.</string>
+
+    <!-- Support -->
+    <string name="updater_support_title">Support my work</string>
+    <string name="updater_support_info">Support my work by donating or simply sharing the kernel with your friends!</string>
+    <string name="updater_support_donate">Donate</string>
+    <string name="updater_support_people">Share</string>
+
+    <string name="share_title">zwliew_Kernel is great!</string>
+    <string name="share_desc">Check out zwliew_Kernel, a kernel meant to improve your experience without any tinkering!\n\nG+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
+    <string name="share_chooser_title">Share via</string>
+
+    <string-array name="donate_items">
+        <item>Cup of coffee - SG</item>
+        <item>McDonald\'s - SG</item>
+        <item>Bus fare - SG</item>
+        <item>Electricity bill - SG</item>
+    </string-array>
 
     <!-- Settings Fragment -->
     <string name="settings_title">Settings</string>

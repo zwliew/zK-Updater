@@ -9,9 +9,6 @@ import android.support.v4.app.NotificationCompat;
 
 import zwliew.kernel.fragments.UpdaterFragment;
 
-/**
- * Created by ZhaoWei on 27/12/2014.
- */
 public class UpdaterService extends IntentService {
 
     public UpdaterService() {
@@ -26,6 +23,7 @@ public class UpdaterService extends IntentService {
 
         if (Store.isBusybox)
             new UpdaterFragment.getKernelInfo().execute();
+
         new UpdaterFragment.getURLContent().execute();
 
         if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <

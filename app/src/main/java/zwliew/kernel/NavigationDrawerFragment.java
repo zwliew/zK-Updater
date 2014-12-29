@@ -83,14 +83,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
     }
 
-    public ActionBarDrawerToggle getActionBarDrawerToggle() {
-        return mActionBarDrawerToggle;
-    }
-
-    public void setActionBarDrawerToggle(ActionBarDrawerToggle actionBarDrawerToggle) {
-        mActionBarDrawerToggle = actionBarDrawerToggle;
-    }
-
     public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
@@ -129,10 +121,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
-    public void openDrawer() {
-        mDrawerLayout.openDrawer(mFragmentContainerView);
-    }
-
     public void closeDrawer() {
         mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
@@ -144,7 +132,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public List<NavigationItem> getMenu() {
-        List<NavigationItem> items = new ArrayList<NavigationItem>();
+        List<NavigationItem> items = new ArrayList<>();
         items.add(new NavigationItem(getResources().getString(R.string.updater_title),
                 getResources().getDrawable(R.drawable.ic_update)));
         items.add(new NavigationItem(getResources().getString(R.string.settings_title),
@@ -177,14 +165,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
-    }
-
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerLayout;
-    }
-
-    public void setDrawerLayout(DrawerLayout drawerLayout) {
-        mDrawerLayout = drawerLayout;
     }
 
     @Override

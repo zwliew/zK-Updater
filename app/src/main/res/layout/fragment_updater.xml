@@ -113,10 +113,62 @@
                     android:src="@drawable/ic_history" />
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/updater_support_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="4dp"
+                card_view:cardCornerRadius="4dp">
+
+                <ImageButton
+                    android:id="@+id/updater_support_info"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:contentDescription="@string/updater_support_title"
+                    android:src="@drawable/ic_info" />
+
+                <ImageButton
+                    android:id="@+id/updater_support_share"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/updater_support_people"
+                    android:src="@drawable/ic_share" />
+
+                <ImageButton
+                    android:id="@+id/updater_support_donate"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/updater_support_donate"
+                    android:src="@drawable/ic_donate" />
+
+                <TextView
+                    android:id="@+id/updater_support_title"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/updater_support_card_view"
+                    android:layout_alignStart="@id/updater_support_card_view"
+                    android:layout_alignTop="@id/updater_support_card_view"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/updater_support_title" />
+            </android.support.v7.widget.CardView>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp">
+                android:layout_height="match_parent">
 
                 <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/download_button"
@@ -126,7 +178,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:src="@drawable/ic_download"
                     fab:fab_colorNormal="@color/accent"
                     fab:fab_colorPressed="@color/accent_light"

@@ -2,19 +2,29 @@ package zwliew.kernel;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androguide.cmdprocessor.CMDProcessor;
 import com.androguide.cmdprocessor.Helpers;
 
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
+import zwliew.kernel.util.IabHelper;
+import zwliew.kernel.util.IabResult;
+import zwliew.kernel.util.Inventory;
 
 /**
  * The Activity extends ActionBarActivity because that's a requirement per the new API for it to
@@ -22,12 +32,32 @@ import zwliew.kernel.fragments.UpdaterFragment;
  */
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
+    public static IabHelper mHelper;
+    IabHelper.QueryInventoryFinishedListener QueryFinishedListener =
+            new IabHelper.QueryInventoryFinishedListener() {
+                @Override
+                public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                    if (mHelper == null)
+                        return;
+
+                    if (result.isFailure()) {
+                        Log.d(Store.TAG, "Failed to query inventory: " + result);
+                        return;
+                    }
+
+                    Store.coffeePrice = inv.getSkuDetails(Store.SKU_COFFEE).getPrice();
+                    Store.busPrice = inv.getSkuDetails(Store.SKU_BUS).getPrice();
+                    Store.mcdonaldsPrice = inv.getSkuDetails(Store.SKU_MCDONALDS).getPrice();
+                    Store.electricityPrice = inv.getSkuDetails(Store.SKU_ELECTRICITY).getPrice();
+                }
+            };
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         /**
          * As per new Support API we can use a Toolbar instead of a ActionBar. The big difference
@@ -67,9 +97,51 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         SharedPreferences sharedPref =
                 this.getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
 
-        if (sharedPref.getBoolean(Store.AUTO_CHECK, true)) {
+        NetworkInfo networkInfo = ((ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected() &&
+                sharedPref.getBoolean(Store.AUTO_CHECK, true))
             BootReceiver.scheduleAlarms(this);
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            mHelper = new IabHelper(this,
+                    Store.base64EncodedPublicKey0 + Store.base64EncodedPublicKey1);
+            mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                public void onIabSetupFinished(IabResult result) {
+                    if (!result.isSuccess()) {
+                        Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
+                        return;
+                    }
+
+                    if (mHelper == null)
+                        return;
+
+                    ArrayList<String> additionalSkuList = new ArrayList<>();
+                    additionalSkuList.add(Store.SKU_COFFEE);
+                    additionalSkuList.add(Store.SKU_BUS);
+                    additionalSkuList.add(Store.SKU_MCDONALDS);
+                    additionalSkuList.add(Store.SKU_ELECTRICITY);
+
+                    mHelper.queryInventoryAsync(true, additionalSkuList, QueryFinishedListener);
+                }
+            });
         }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!mHelper.handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mHelper != null)
+            mHelper.dispose();
+        mHelper = null;
     }
 
     @Override

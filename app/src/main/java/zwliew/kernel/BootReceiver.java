@@ -8,10 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 
-/**
- * Created by ZhaoWei on 27/12/2014.
- */
 public class BootReceiver extends BroadcastReceiver {
+
     public static void scheduleAlarms(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, UpdaterService.class);
