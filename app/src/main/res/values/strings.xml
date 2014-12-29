@@ -20,16 +20,15 @@
 
     <!-- Updater Fragment -->
     <string name="updater_title">zK Updater</string>
-    <string name="retry_check">Retry</string>
 
     <!-- Current version -->
     <string name="updater_cur_title">Current version</string>
-    <string name="updater_cur_info">This is the current version of zwliew_Kernel on your device.</string>
+    <string name="updater_cur_info">This is the current release of zwliew_Kernel on your device.</string>
 
     <!-- Newest version -->
     <string name="updater_new_title">Newest version</string>
     <string name="updater_new_changelog">Changelog</string>
-    <string name="updater_new_info">This is the latest available version of zwliew_Kernel for your device.</string>
+    <string name="updater_new_info">This is the latest available release of zwliew_Kernel for your device.</string>
 
     <!-- Support -->
     <string name="updater_support_title">Support my work</string>
@@ -42,10 +41,10 @@
     <string name="share_chooser_title">Share via</string>
 
     <string-array name="donate_items">
-        <item>Cup of coffee - SG</item>
-        <item>McDonald\'s - SG</item>
-        <item>Bus fare - SG</item>
-        <item>Electricity bill - SG</item>
+        <item>Cup of coffee - SGD$3</item>
+        <item>McDonald\'s - SGD$5</item>
+        <item>Bus fare - SGD$8</item>
+        <item>Electricity bill - SGD$10</item>
     </string-array>
 
     <!-- Settings Fragment -->

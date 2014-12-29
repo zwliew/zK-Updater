@@ -30,16 +30,15 @@
                 android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_dropshadow" />
+
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@drawable/toolbar_dropshadow" />
-        </FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
 
     </LinearLayout>
 

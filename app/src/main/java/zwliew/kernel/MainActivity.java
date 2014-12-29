@@ -17,14 +17,11 @@ import android.widget.Toast;
 import com.androguide.cmdprocessor.CMDProcessor;
 import com.androguide.cmdprocessor.Helpers;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
 import zwliew.kernel.util.IabHelper;
 import zwliew.kernel.util.IabResult;
-import zwliew.kernel.util.Inventory;
 
 /**
  * The Activity extends ActionBarActivity because that's a requirement per the new API for it to
@@ -33,24 +30,6 @@ import zwliew.kernel.util.Inventory;
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     public static IabHelper mHelper;
-    IabHelper.QueryInventoryFinishedListener QueryFinishedListener =
-            new IabHelper.QueryInventoryFinishedListener() {
-                @Override
-                public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-                    if (mHelper == null)
-                        return;
-
-                    if (result.isFailure()) {
-                        Log.d(Store.TAG, "Failed to query inventory: " + result);
-                        return;
-                    }
-
-                    Store.coffeePrice = inv.getSkuDetails(Store.SKU_COFFEE).getPrice();
-                    Store.busPrice = inv.getSkuDetails(Store.SKU_BUS).getPrice();
-                    Store.mcdonaldsPrice = inv.getSkuDetails(Store.SKU_MCDONALDS).getPrice();
-                    Store.electricityPrice = inv.getSkuDetails(Store.SKU_ELECTRICITY).getPrice();
-                }
-            };
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
@@ -100,30 +79,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         NetworkInfo networkInfo = ((ConnectivityManager) this
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected() &&
-                sharedPref.getBoolean(Store.AUTO_CHECK, true))
-            BootReceiver.scheduleAlarms(this);
 
         if (networkInfo != null && networkInfo.isConnected()) {
+            if (sharedPref.getBoolean(Store.AUTO_CHECK, true))
+                BootReceiver.scheduleAlarms(this);
+
             mHelper = new IabHelper(this,
                     Store.base64EncodedPublicKey0 + Store.base64EncodedPublicKey1);
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
-                    if (!result.isSuccess()) {
+                    if (!result.isSuccess())
                         Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
-                        return;
-                    }
-
-                    if (mHelper == null)
-                        return;
-
-                    ArrayList<String> additionalSkuList = new ArrayList<>();
-                    additionalSkuList.add(Store.SKU_COFFEE);
-                    additionalSkuList.add(Store.SKU_BUS);
-                    additionalSkuList.add(Store.SKU_MCDONALDS);
-                    additionalSkuList.add(Store.SKU_ELECTRICITY);
-
-                    mHelper.queryInventoryAsync(true, additionalSkuList, QueryFinishedListener);
                 }
             });
         }
