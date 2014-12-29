@@ -50,9 +50,6 @@ MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.melnykov:floatingactionbutton:1.1.0:12:5
 MERGED from com.android.support:recyclerview-v7:21.0.3:17:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
-MERGED from com.nispok:snackbar:2.7.2:10:5
-MERGED from com.android.support:recyclerview-v7:21.0.3:17:5
-MERGED from com.android.support:support-v4:21.0.3:16:5
 	android:label
 		ADDED from AndroidManifest.xml:15:9
 	android:allowBackup
@@ -105,9 +102,6 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.melnykov:floatingactionbutton:1.1.0:8:5
 MERGED from com.android.support:recyclerview-v7:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
-MERGED from com.nispok:snackbar:2.7.2:6:5
-MERGED from com.android.support:recyclerview-v7:21.0.3:15:5
-MERGED from com.android.support:support-v4:21.0.3:15:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
@@ -116,7 +110,6 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 		INJECTED from AndroidManifest.xml:0:0
 activity#android.support.v7.widget.TestActivity
 ADDED from com.android.support:recyclerview-v7:21.0.3:18:9
-MERGED from com.android.support:recyclerview-v7:21.0.3:18:9
 MERGED from com.android.support:recyclerview-v7:21.0.3:18:9
 	android:label
 		ADDED from com.android.support:recyclerview-v7:21.0.3:18:19
