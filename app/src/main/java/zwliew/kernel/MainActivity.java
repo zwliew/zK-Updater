@@ -20,6 +20,7 @@ import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
 import zwliew.kernel.util.IabHelper;
 import zwliew.kernel.util.IabResult;
+import zwliew.kernel.util.Inventory;
 
 /**
  * The Activity extends ActionBarActivity because that's a requirement per the new API for it to
@@ -28,6 +29,16 @@ import zwliew.kernel.util.IabResult;
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     public static IabHelper mHelper;
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        @Override
+        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+            if (mHelper == null)
+                return;
+
+            if (result.isFailure())
+                Log.d(Store.TAG, "Failed to query inventory: " + result);
+        }
+    };
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
@@ -83,10 +94,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             public void onIabSetupFinished(IabResult result) {
                 if (!result.isSuccess())
                     Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
+
+                if (mHelper == null)
+                    return;
+
+                mHelper.queryInventoryAsync(mGotInventoryListener);
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
