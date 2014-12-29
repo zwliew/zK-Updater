@@ -17,7 +17,6 @@ public class UpdaterService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         SharedPreferences sharedPreferences = getApplicationContext().
                 getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
 

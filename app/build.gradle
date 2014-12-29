@@ -8,8 +8,8 @@ android {
         applicationId "zwliew.kernel"
         minSdkVersion 12
         targetSdkVersion 21
-        versionCode 5
-        versionName "1.0-beta3"
+        versionCode 6
+        versionName "1.0-beta4"
     }
     buildTypes {
         release {
@@ -29,5 +29,4 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.jakewharton:butterknife:6.0.0'
-    compile 'com.nispok:snackbar:2.7.2'
 }

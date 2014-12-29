@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -86,9 +85,6 @@ public class SettingsFragment extends Fragment {
                 if (networkInfo != null && networkInfo.isConnected() &&
                         autoCheckCB.isChecked())
                     BootReceiver.scheduleAlarms(getActivity());
-                else
-                    Toast.makeText(getActivity(),
-                            getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
 
             }
         });

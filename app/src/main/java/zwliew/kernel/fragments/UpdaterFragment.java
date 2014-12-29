@@ -28,10 +28,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.CMDProcessor;
-import com.melnykov.fab.FloatingActionButton;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.listeners.EventListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,7 +36,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
@@ -66,9 +61,7 @@ public class UpdaterFragment extends Fragment {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
-
-    @InjectView(R.id.download_button)
-    FloatingActionButton fabButton;
+    
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
 
@@ -137,30 +130,8 @@ public class UpdaterFragment extends Fragment {
                     new UpdaterFragment.getURLContent().execute();
                 } else {
                     swipeLayout.setRefreshing(false);
-                    SnackbarManager.show(Snackbar.with(getActivity())
-                                    .text(getString(R.string.no_connection))
-                                    .eventListener(new EventListener() {
-                                        @Override
-                                        public void onShow(Snackbar snackbar) {
-                                            fabButton.animate().y(130);
-                                        }
-
-                                        @Override
-                                        public void onShown(Snackbar snackbar) {
-
-                                        }
-
-                                        @Override
-                                        public void onDismiss(Snackbar snackbar) {
-                                            fabButton.animate().y(225);
-                                        }
-
-                                        @Override
-                                        public void onDismissed(Snackbar snackbar) {
-
-                                        }
-                                    })
-                    );
+                    Toast.makeText(getActivity(),
+                            getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
                 }
 
                 if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
@@ -205,30 +176,8 @@ public class UpdaterFragment extends Fragment {
                     swipeLayout.setRefreshing(false);
                 }
             });
-            SnackbarManager.show(Snackbar.with(getActivity())
-                            .text(getString(R.string.no_connection))
-                            .eventListener(new EventListener() {
-                                @Override
-                                public void onShow(Snackbar snackbar) {
-                                    fabButton.animate().y(130);
-                                }
-
-                                @Override
-                                public void onShown(Snackbar snackbar) {
-
-                                }
-
-                                @Override
-                                public void onDismiss(Snackbar snackbar) {
-                                    fabButton.animate().y(225);
-                                }
-
-                                @Override
-                                public void onDismissed(Snackbar snackbar) {
-
-                                }
-                            })
-            );
+            Toast.makeText(getActivity(),
+                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
 
         if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
@@ -349,30 +298,8 @@ public class UpdaterFragment extends Fragment {
                     .customView(webView)
                     .show();
         } else {
-            SnackbarManager.show(Snackbar.with(getActivity())
-                            .text(getString(R.string.no_connection))
-                            .eventListener(new EventListener() {
-                                @Override
-                                public void onShow(Snackbar snackbar) {
-                                    fabButton.animate().y(130);
-                                }
-
-                                @Override
-                                public void onShown(Snackbar snackbar) {
-
-                                }
-
-                                @Override
-                                public void onDismiss(Snackbar snackbar) {
-                                    fabButton.animate().y(225);
-                                }
-
-                                @Override
-                                public void onDismissed(Snackbar snackbar) {
-
-                                }
-                            })
-            );
+            Toast.makeText(getActivity(),
+                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -442,30 +369,8 @@ public class UpdaterFragment extends Fragment {
 
 
         } else {
-            SnackbarManager.show(Snackbar.with(getActivity())
-                            .text(getString(R.string.no_connection))
-                            .eventListener(new EventListener() {
-                                @Override
-                                public void onShow(Snackbar snackbar) {
-                                    fabButton.animate().y(130);
-                                }
-
-                                @Override
-                                public void onShown(Snackbar snackbar) {
-
-                                }
-
-                                @Override
-                                public void onDismiss(Snackbar snackbar) {
-                                    fabButton.animate().y(225);
-                                }
-
-                                @Override
-                                public void onDismissed(Snackbar snackbar) {
-
-                                }
-                            })
-            );
+            Toast.makeText(getActivity(),
+                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
     }
 
