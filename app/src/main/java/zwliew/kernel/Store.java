@@ -21,4 +21,5 @@ public class Store {
     public static final String TAG = "zwliew_kernel";
     public static boolean isBusybox = false;
     public static boolean isRoot = false;
+    public static long downloadReference;
 }

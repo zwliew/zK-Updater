@@ -18,6 +18,7 @@ import com.androguide.cmdprocessor.Helpers;
 import butterknife.ButterKnife;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
+import zwliew.kernel.services.BootReceiver;
 import zwliew.kernel.util.IabHelper;
 import zwliew.kernel.util.IabResult;
 import zwliew.kernel.util.Inventory;

@@ -311,20 +311,20 @@ public class UpdaterFragment extends Fragment {
 
     @OnClick(R.id.download_button)
     void downloadZip() {
+
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
         if (networkInfo != null && networkInfo.isConnected()) {
-            Uri uri = Uri.parse(DOWNLOAD_URL + latestRelease + ".zip");
-            DownloadManager.Request r = new DownloadManager.Request(uri);
-            // This put the download in the same Download dir the browser uses
-            r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                    "zwliew_Kernel-" + DEVICE_MODEL + "-" + latestRelease + ".zip");
-            r.setNotificationVisibility(
-                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            DownloadManager dm =
-                    (DownloadManager) getActivity()
-                            .getSystemService(Context.DOWNLOAD_SERVICE);
-            dm.enqueue(r);
+            DownloadManager.Request request =
+                    new DownloadManager.Request(Uri.parse(DOWNLOAD_URL + latestRelease + ".zip"))
+                            .setNotificationVisibility(
+                                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                    "zwliew_Kernel-" + DEVICE_MODEL + "-" + latestRelease + ".zip");
+
+            Store.downloadReference = ((DownloadManager) getActivity().
+                    getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
 
             if (Store.isRoot) {
                 new MaterialDialog.Builder(getActivity())
@@ -342,7 +342,6 @@ public class UpdaterFragment extends Fragment {
                                 progress.setCancelable(false);
                                 progress.show();
 
-                                // Start reboot
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -354,8 +353,6 @@ public class UpdaterFragment extends Fragment {
                         })
                         .show();
             }
-
-
         } else {
             Toast.makeText(getActivity(),
                     getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
@@ -399,7 +396,8 @@ public class UpdaterFragment extends Fragment {
                     newVerTV.setText(latestRelease);
             }
 
-            swipeLayout.setRefreshing(false);
+            if (swipeLayout != null)
+                swipeLayout.setRefreshing(false);
         }
     }
 

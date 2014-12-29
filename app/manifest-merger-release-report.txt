@@ -74,7 +74,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:23:17
 	android:name
 		ADDED from AndroidManifest.xml:23:27
-receiver#zwliew.kernel.BootReceiver
+receiver#zwliew.kernel.services.BootReceiver
 ADDED from AndroidManifest.xml:27:9
 	android:name
 		ADDED from AndroidManifest.xml:27:19
@@ -84,7 +84,7 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from AndroidManifest.xml:29:17
 	android:name
 		ADDED from AndroidManifest.xml:29:25
-service#zwliew.kernel.UpdaterService
+service#zwliew.kernel.services.UpdaterService
 ADDED from AndroidManifest.xml:33:9
 	android:name
 		ADDED from AndroidManifest.xml:33:18

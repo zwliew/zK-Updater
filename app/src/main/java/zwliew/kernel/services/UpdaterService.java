@@ -1,4 +1,4 @@
-package zwliew.kernel;
+package zwliew.kernel.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -9,6 +9,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 
+import zwliew.kernel.R;
+import zwliew.kernel.Store;
 import zwliew.kernel.fragments.UpdaterFragment;
 
 public class UpdaterService extends IntentService {

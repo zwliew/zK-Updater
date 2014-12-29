@@ -30,6 +30,8 @@
     <string name="updater_new_changelog">Changelog</string>
     <string name="updater_new_info">This is the latest available release of zwliew_Kernel for your device.</string>
 
+    <string name="download_complete">zwliew_Kernel download complete!</string>
+
     <!-- Support -->
     <string name="updater_support_title">Support my work</string>
     <string name="updater_support_info">Support my work by donating or simply sharing the kernel with your friends!</string>
@@ -42,7 +44,7 @@
 
     <string-array name="donate_items">
         <item>Cup of coffee - SGD$3</item>
-        <item>McDonald\'s - SGD$5</item>
+        <item>McDonald\'s lunch - SGD$5</item>
         <item>Bus fare - SGD$8</item>
         <item>Electricity bill - SGD$10</item>
     </string-array>

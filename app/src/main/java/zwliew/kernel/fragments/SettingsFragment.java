@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import zwliew.kernel.BootReceiver;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
+import zwliew.kernel.services.BootReceiver;
 
 public class SettingsFragment extends Fragment {
 
