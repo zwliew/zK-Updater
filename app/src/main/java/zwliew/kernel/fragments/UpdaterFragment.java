@@ -64,7 +64,6 @@ public class UpdaterFragment extends Fragment {
 
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
-
             if (MainActivity.mHelper == null)
                 return;
 
@@ -284,7 +283,7 @@ public class UpdaterFragment extends Fragment {
 
             new MaterialDialog.Builder(getActivity())
                     .title(getString(R.string.updater_new_changelog))
-                    .customView(webView)
+                    .customView(webView, false)
                     .show();
         } else {
             Toast.makeText(getActivity(),
