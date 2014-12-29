@@ -21,8 +21,4 @@ public class Store {
     public static final String TAG = "zwliew_kernel";
     public static boolean isBusybox = false;
     public static boolean isRoot = false;
-    public static String coffeePrice = "3";
-    public static String mcdonaldsPrice = "5";
-    public static String busPrice = "8";
-    public static String electricityPrice = "10";
 }
