@@ -29,7 +29,7 @@
     <string name="updater_new_changelog">Changelog</string>
     <string name="updater_new_info">This is the latest available release of zwliew_Kernel for your device.</string>
 
-    <string name="download_complete">zwliew_Kernel download complete!</string>
+    <string name="avail_release">New release available!</string>
 
     <!-- Support -->
     <string name="updater_support_title">Support my work</string>
