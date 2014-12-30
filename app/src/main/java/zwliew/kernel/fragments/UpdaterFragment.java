@@ -3,7 +3,6 @@ package zwliew.kernel.fragments;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Fragment;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -120,21 +118,6 @@ public class UpdaterFragment extends Fragment {
                     Toast.makeText(getActivity(),
                             getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
                 }
-
-                if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
-                        sharedPreferences.getInt(Store.NEW_KERNEL, 0)
-                        && sharedPreferences.getInt(Store.CUR_KERNEL, 0) != 0
-                        && sharedPreferences.getInt(Store.NEW_KERNEL, 0) > 0) {
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(getActivity())
-                                    .setSmallIcon(R.drawable.ic_new_release)
-                                    .setContentTitle("zK Updater ")
-                                    .setContentText("New release!");
-                    NotificationManager mNotifyManager = (NotificationManager)
-                            getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
-                    mNotifyManager.notify(1, mBuilder.build());
-                }
             }
         });
 
@@ -166,24 +149,7 @@ public class UpdaterFragment extends Fragment {
                     getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
 
-        if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
-                sharedPreferences.getInt(Store.NEW_KERNEL, 0)
-                && sharedPreferences.getInt(Store.CUR_KERNEL, 0) != 0
-                && sharedPreferences.getInt(Store.NEW_KERNEL, 0) > 0) {
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(getActivity())
-                            .setSmallIcon(R.drawable.ic_new_release)
-                            .setContentTitle("zK Updater ")
-                            .setContentText("New release!");
-            NotificationManager mNotifyManager = (NotificationManager)
-                    getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            mNotifyManager.notify(1, mBuilder.build());
-        }
-
-
         return rootView;
-
     }
 
     @OnClick(R.id.updater_support_donate)
