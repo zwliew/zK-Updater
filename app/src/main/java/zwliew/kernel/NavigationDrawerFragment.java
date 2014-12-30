@@ -89,15 +89,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),
                 mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+            }
+
+            @Override
             public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
                 if (!isAdded()) return;
                 getActivity().invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
                 if (!isAdded()) return;
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
