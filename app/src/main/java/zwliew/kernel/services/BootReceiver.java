@@ -18,7 +18,7 @@ public class BootReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getService(context, 1234, intent, 0);
 
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + 5000, 86400000, pendingIntent);
+                SystemClock.elapsedRealtime(), 86400000, pendingIntent);
     }
 
     @Override
