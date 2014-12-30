@@ -12,6 +12,10 @@
     <string name="unknown_val">Unknown</string>
     <string name="no_connection">No connection</string>
     <string name="app_not_available">App not available</string>
+    <string name="not_supported_title">Device not supported</string>
+    <string name="not_supported_desc">This device is not officially supported by zwliew_Kernel.</string>
+    <string name="no_requirements_title">No root or busybox</string>
+    <string name="no_requirements_desc">This device does not have the appropriate functionality. Please install them before using this app.</string>
 
     <!-- Updater Fragment -->
     <string name="updater_title">zK Updater</string>

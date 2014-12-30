@@ -1,5 +1,7 @@
 package zwliew.kernel;
 
+import android.os.Build;
+
 public class Store {
     public static final String ARG_SECTION_NUMBER = "zwliew.kernel.section_number";
 
@@ -17,8 +19,14 @@ public class Store {
     public static final int RC_REQUEST = 12321;
     public static final String PAYLOAD = "qwerty12345";
     public static final String SYSTEM_INFO_CMD = "uname -r";
-    public static final String SERVER_URL = "http://128.199.239.125/";
     public static final String TAG = "zwliew_kernel";
     public static final String REBOOT_RECOVERY_CMD = "reboot recovery";
+    public static final String SERVER_URL = "http://128.199.239.125/";
+    public static final String DEVICE_MODEL = Build.DEVICE;
+    public static final String LATEST_RELEASE_URL = SERVER_URL + DEVICE_MODEL + "/appfiles/latest";
+    public static final String DOWNLOAD_URL = SERVER_URL + DEVICE_MODEL + "/releases/zwliew_Kernel-" + DEVICE_MODEL + "-";
+    public static final String CHANGELOG_URL = SERVER_URL + DEVICE_MODEL + "/appfiles/changelog.html";
+    public static final boolean IS_SUPPORTED = DEVICE_MODEL.equals("ghost") || DEVICE_MODEL.equals("flo");
+    public static final String ZIP_ENDING = DEVICE_MODEL.equals("ghost") ? ".zip" : ".img";
     public static long downloadReference;
 }

@@ -2,6 +2,7 @@ package zwliew.kernel;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -9,8 +10,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.Helpers;
 
 import butterknife.ButterKnife;
@@ -62,20 +63,36 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mNavigationDrawerFragment.setup(R.id.fragment_drawer,
                 (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
-        /* We do not want to handle all the useless logic
-         * if the user does not have root or busybox.
-         *
-         * Simply exit the app and tell the user to get them.
-         */
-        if (!Helpers.checkReqs()) {
-            Toast.makeText(this,
-                    "No root or busybox! Please install them.",
-                    Toast.LENGTH_SHORT).show();
-            finish();
+        if (!Store.IS_SUPPORTED) {
+            new MaterialDialog.Builder(this)
+                    .title(getString(R.string.not_supported_title))
+                    .content(getString(R.string.not_supported_desc))
+                    .positiveText(android.R.string.ok)
+                    .icon(getResources().getDrawable(R.drawable.ic_warning))
+                    .dismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else if (!Helpers.checkReqs()) {
+            new MaterialDialog.Builder(this)
+                    .title(getString(R.string.no_requirements_title))
+                    .content(getString(R.string.no_requirements_desc))
+                    .positiveText(android.R.string.ok)
+                    .icon(getResources().getDrawable(R.drawable.ic_warning))
+                    .dismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            finish();
+                        }
+                    })
+                    .show();
         }
 
         if (getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE).
-                getBoolean(Store.AUTO_CHECK, true))
+                getBoolean(Store.AUTO_CHECK, true) && Store.IS_SUPPORTED)
             BootReceiver.scheduleAlarms(this);
 
         mHelper = new IabHelper(this,

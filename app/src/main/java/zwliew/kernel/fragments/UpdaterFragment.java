@@ -11,7 +11,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
@@ -44,15 +43,6 @@ import zwliew.kernel.util.IabResult;
 import zwliew.kernel.util.Purchase;
 
 public class UpdaterFragment extends Fragment {
-
-    private static final String DEVICE_MODEL = Build.DEVICE;
-    private static final String LATEST_RELEASE_URL = Store.SERVER_URL +
-            DEVICE_MODEL + "/appfiles/latest";
-    private final String DOWNLOAD_URL = Store.SERVER_URL + DEVICE_MODEL
-            + "/releases/zwliew_Kernel-" + DEVICE_MODEL + "-";
-    private final String CHANGELOG_URL = Store.SERVER_URL +
-            DEVICE_MODEL + "/appfiles/changelog.html";
-
     private static String latestRelease;
     private static TextView newVerTV;
     private static TextView curVerTV;
@@ -191,6 +181,7 @@ public class UpdaterFragment extends Fragment {
             mNotifyManager.notify(1, mBuilder.build());
         }
 
+
         return rootView;
 
     }
@@ -266,7 +257,7 @@ public class UpdaterFragment extends Fragment {
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             WebView webView = new WebView(getActivity());
-            webView.loadUrl(CHANGELOG_URL);
+            webView.loadUrl(Store.CHANGELOG_URL);
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -310,15 +301,16 @@ public class UpdaterFragment extends Fragment {
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            DownloadManager.Request request =
-                    new DownloadManager.Request(Uri.parse(DOWNLOAD_URL + latestRelease + ".zip"))
-                            .setNotificationVisibility(
-                                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                    "zwliew_Kernel-" + DEVICE_MODEL + "-" + latestRelease + ".zip");
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Store.DOWNLOAD_URL + latestRelease + Store.ZIP_ENDING))
+                    .setNotificationVisibility(
+                            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                            "zwliew_Kernel-" + Store.DEVICE_MODEL + "-" + latestRelease + Store.ZIP_ENDING);
+
 
             Store.downloadReference = ((DownloadManager) getActivity().
                     getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
+
         } else {
             Toast.makeText(getActivity(),
                     getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
@@ -333,7 +325,7 @@ public class UpdaterFragment extends Fragment {
 
             try {
                 // get URL content
-                url = new URL(LATEST_RELEASE_URL);
+                url = new URL(Store.LATEST_RELEASE_URL);
                 URLConnection conn = url.openConnection();
 
                 // open the stream and put it into BufferedReader

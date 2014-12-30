@@ -23,11 +23,12 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences sharedPref =
-                context.getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
+        if (Store.IS_SUPPORTED) {
+            SharedPreferences sharedPref =
+                    context.getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
 
-        if (sharedPref.getBoolean(Store.AUTO_CHECK, true)) {
-            scheduleAlarms(context);
+            if (sharedPref.getBoolean(Store.AUTO_CHECK, true))
+                scheduleAlarms(context);
         }
     }
 }
