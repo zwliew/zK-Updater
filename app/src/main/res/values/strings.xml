@@ -13,11 +13,6 @@
     <string name="no_connection">No connection</string>
     <string name="app_not_available">App not available</string>
 
-    <!-- Recovery -->
-    <string name="confirm_recovery_title">Reboot recovery?</string>
-    <string name="confirm_recovery_desc">Do you want to reboot to recovery? ONLY select once the download is fully completed.</string>
-    <string name="progress_recovery">Rebooting to recovery</string>
-
     <!-- Updater Fragment -->
     <string name="updater_title">zK Updater</string>
 
@@ -51,8 +46,7 @@
 
     <!-- Settings Fragment -->
     <string name="settings_title">Settings</string>
-    <string name="root_status">Root</string>
-    <string name="busybox_status">Busybox</string>
+    <string name="settings_layout_title">SETTINGS</string>
 
     <string name="about_author">About me</string>
     <string name="about_author_name">zwliew</string>
@@ -60,4 +54,7 @@
 
     <string name="auto_check_desc">Automatically check for newer kernels\neven when you\'re not in the app.</string>
     <string name="auto_check_title">Auto-check for updates</string>
+
+    <string name="auto_flash_title">Auto-flash kernels</string>
+    <string name="auto_flash_desc">Automatically reboot to recovery\nand flash downloaded kernels.</string>
 </resources>

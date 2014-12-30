@@ -11,10 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
@@ -23,7 +22,10 @@ import zwliew.kernel.services.BootReceiver;
 
 public class SettingsFragment extends Fragment {
 
-    private CheckBox autoCheckCB;
+    @InjectView(R.id.auto_check)
+    CheckBox autoCheckCB;
+    @InjectView(R.id.auto_flash)
+    CheckBox autoFlashCB;
 
     public static SettingsFragment newInstance(int sectionNumber) {
         SettingsFragment fragment = new SettingsFragment();
@@ -46,44 +48,42 @@ public class SettingsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.inject(this, rootView);
 
-        TextView busyboxTV = (TextView) rootView.findViewById(R.id.busybox_status);
-        TextView rootTV = (TextView) rootView.findViewById(R.id.root_status);
-        autoCheckCB = (CheckBox) rootView.findViewById(R.id.auto_check);
-        RelativeLayout autoCheckTV = (RelativeLayout) rootView.findViewById(R.id.auto_check_layout);
-
         SharedPreferences sharedPref =
                 getActivity().getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
         autoCheckCB.setChecked(sharedPref.getBoolean(Store.AUTO_CHECK, true));
+        autoFlashCB.setChecked(sharedPref.getBoolean(Store.AUTO_FLASH, true));
 
-        if (Store.isBusybox)
-            busyboxTV.setText("Available");
-        else
-            busyboxTV.setText("Unavailable");
-
-        if (Store.isRoot)
-            rootTV.setText("Available");
-        else
-            rootTV.setText("Unavailable");
-
-        autoCheckTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (autoCheckCB.isChecked())
-                    autoCheckCB.setChecked(false);
-                else
-                    autoCheckCB.setChecked(true);
-
-                SharedPreferences sharedPrefs = getActivity().
-                        getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putBoolean(Store.AUTO_CHECK, autoCheckCB.isChecked()).apply();
-
-                if (autoCheckCB.isChecked())
-                    BootReceiver.scheduleAlarms(getActivity());
-
-            }
-        });
         return rootView;
+    }
+
+    @OnClick(R.id.auto_check_layout)
+    void autoCheckToggle() {
+        if (autoCheckCB.isChecked())
+            autoCheckCB.setChecked(false);
+        else
+            autoCheckCB.setChecked(true);
+
+        SharedPreferences sharedPrefs = getActivity().
+                getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(Store.AUTO_CHECK, autoCheckCB.isChecked()).apply();
+
+        if (autoCheckCB.isChecked())
+            BootReceiver.scheduleAlarms(getActivity());
+
+    }
+
+    @OnClick(R.id.auto_flash_layout)
+    void autoFlashToggle() {
+        if (autoFlashCB.isChecked())
+            autoFlashCB.setChecked(false);
+        else
+            autoFlashCB.setChecked(true);
+
+        SharedPreferences sharedPrefs = getActivity().
+                getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(Store.AUTO_FLASH, autoFlashCB.isChecked()).apply();
     }
 
     @OnClick(R.id.about)

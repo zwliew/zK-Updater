@@ -4,17 +4,36 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 
-import zwliew.kernel.R;
+import com.androguide.cmdprocessor.CMDProcessor;
+
 import zwliew.kernel.Store;
 
 public class DownloadReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (Store.downloadReference ==
-                intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1))
-            Toast.makeText(context,
-                    context.getString(R.string.download_complete), Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPrefs = context.getSharedPreferences(
+                Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
+        long reference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
+        if (Store.downloadReference == reference &&
+                sharedPrefs.getBoolean(Store.AUTO_FLASH, true)) {
+            Cursor cursor = ((DownloadManager) context.getSystemService(
+                    Context.DOWNLOAD_SERVICE)).query(new DownloadManager.Query()
+                    .setFilterById(reference));
+            cursor.moveToFirst();
+            final String savedFilePath = cursor.getString(cursor.getColumnIndex(
+                    DownloadManager.COLUMN_LOCAL_FILENAME));
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
+                            "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
+                }
+            }).start();
+        }
     }
 }

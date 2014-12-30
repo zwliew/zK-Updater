@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Fragment;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -122,8 +121,7 @@ public class UpdaterFragment extends Fragment {
                 NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                         .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-                if (Store.isBusybox)
-                    new UpdaterFragment.getKernelInfo().execute();
+                new UpdaterFragment.getKernelInfo().execute();
 
                 if (networkInfo != null && networkInfo.isConnected()) {
                     new UpdaterFragment.getURLContent().execute();
@@ -163,8 +161,7 @@ public class UpdaterFragment extends Fragment {
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        if (Store.isBusybox)
-            new UpdaterFragment.getKernelInfo().execute();
+        new UpdaterFragment.getKernelInfo().execute();
 
         if (networkInfo != null && networkInfo.isConnected()) {
             new UpdaterFragment.getURLContent().execute();
@@ -252,8 +249,6 @@ public class UpdaterFragment extends Fragment {
                     getResources().getString(R.string.share_chooser_title)));
         else
             Toast.makeText(getActivity(), R.string.app_not_available, Toast.LENGTH_SHORT).show();
-
-
     }
 
     @OnClick(R.id.updater_support_info)
@@ -310,8 +305,7 @@ public class UpdaterFragment extends Fragment {
     }
 
     @OnClick(R.id.download_button)
-    void downloadZip() {
-
+    void downloadKernel() {
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
@@ -325,34 +319,6 @@ public class UpdaterFragment extends Fragment {
 
             Store.downloadReference = ((DownloadManager) getActivity().
                     getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
-
-            if (Store.isRoot) {
-                new MaterialDialog.Builder(getActivity())
-                        .content(getString(R.string.confirm_recovery_desc))
-                        .title(getString(R.string.confirm_recovery_title))
-                        .positiveText(android.R.string.ok)
-                        .negativeText(android.R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                ProgressDialog progress =
-                                        new ProgressDialog(getActivity());
-                                progress.setMessage(getString(R.string.progress_recovery));
-                                progress.setIndeterminate(true);
-                                progress.setCancelable(false);
-                                progress.show();
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // Reboot
-                                        CMDProcessor.runSuCommand(Store.REBOOT_RECOVERY_CMD);
-                                    }
-                                }).start();
-                            }
-                        })
-                        .show();
-            }
         } else {
             Toast.makeText(getActivity(),
                     getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
@@ -420,7 +386,8 @@ public class UpdaterFragment extends Fragment {
         }
 
         protected void onPostExecute(String curVersion) {
-            editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
+            if (editor != null)
+                editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
             curVerTV.setText("r" + curVersion);
         }
     }

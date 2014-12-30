@@ -5,7 +5,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -40,11 +40,23 @@
                 android:text="@string/about_author_summary" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/settings_layout_title"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/settings_layout_title"
+            android:textStyle="bold" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:background="#B6B6B6" />
 
         <RelativeLayout
@@ -58,7 +70,7 @@
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/auto_check_title"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/textView"
+                android:layout_below="@+id/auto_check_title"
                 android:layout_gravity="center_vertical|start"
                 android:text="@string/auto_check_desc" />
 
@@ -89,37 +101,8 @@
 
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="#B6B6B6" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:minHeight="64dp"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
-                android:text="@string/busybox_status" />
-
-            <TextView
-                android:id="@+id/busybox_status"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/unknown_val" />
-        </LinearLayout>
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/auto_flash_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
@@ -129,18 +112,35 @@
             android:padding="8dp">
 
             <TextView
+                android:id="@+id/auto_flash_title"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
                 android:paddingBottom="2dp"
-                android:text="@string/root_status" />
+                android:text="@string/auto_flash_title" />
 
             <TextView
-                android:id="@+id/root_status"
                 style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/unknown_val" />
-        </LinearLayout>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/auto_flash_title"
+                android:layout_gravity="center_vertical|start"
+                android:text="@string/auto_flash_desc" />
+
+            <android.widget.CheckBox
+                android:id="@+id/auto_flash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical|end"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

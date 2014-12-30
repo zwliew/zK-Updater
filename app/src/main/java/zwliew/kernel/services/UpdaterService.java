@@ -26,8 +26,7 @@ public class UpdaterService extends IntentService {
         NetworkInfo networkInfo = ((ConnectivityManager) getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        if (Store.isBusybox)
-            new UpdaterFragment.getKernelInfo().execute();
+        new UpdaterFragment.getKernelInfo().execute();
 
         if (networkInfo != null && networkInfo.isConnected())
             new UpdaterFragment.getURLContent().execute();

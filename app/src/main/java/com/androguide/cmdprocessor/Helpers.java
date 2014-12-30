@@ -148,6 +148,27 @@ public class Helpers {
         return true;
     }
 
+    public static boolean checkReqs() {
+        if (!new File("/system/bin/busybox").exists()
+                && !new File("/system/xbin/busybox").exists() ||
+                !new File("/system/bin/su").exists()
+                        && !new File("/system/xbin/su").exists()) {
+            Log.e(TAG, "Root or busybox not in xbin or bin!");
+            return false;
+        }
+
+        try {
+            if (!runSuCommand("ls /data/app-private" + "\n" + "busybox mount").success()) {
+                Log.e(TAG, "Root and busybox are there but it is borked! ");
+                return false;
+            }
+        } catch (NullPointerException e) {
+            Log.e(TAG, "NullpointerException thrown while testing root and busybox", e);
+            return false;
+        }
+        return true;
+    }
+
     public static String[] getMounts(CharSequence path) {
         BufferedReader bufferedReader = null;
         try {
