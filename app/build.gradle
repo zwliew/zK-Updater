@@ -34,5 +34,4 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.jakewharton:butterknife:6.0.0'
-    compile 'com.github.traex.rippleeffect:library:1.2.3'
 }
