@@ -30,8 +30,14 @@ public class DownloadReceiver extends BroadcastReceiver {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
-                            "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
+                    if (Store.DEVICE_MODEL.equals("ghost")) {
+                        CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
+                                "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
+                    } else {
+                        CMDProcessor.runSuCommand("dd if=" + savedFilePath +
+                                " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
+                                Store.REBOOT_CMD);
+                    }
                 }
             }).start();
         }
