@@ -123,7 +123,7 @@ public class UpdaterFragment extends Fragment {
 
                 if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
                         sharedPreferences.getInt(Store.NEW_KERNEL, 0)
-                        && sharedPreferences.getInt(Store.CUR_KERNEL, 0) > 0
+                        && sharedPreferences.getInt(Store.CUR_KERNEL, 0) != 0
                         && sharedPreferences.getInt(Store.NEW_KERNEL, 0) > 0) {
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getActivity())
@@ -168,7 +168,7 @@ public class UpdaterFragment extends Fragment {
 
         if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
                 sharedPreferences.getInt(Store.NEW_KERNEL, 0)
-                && sharedPreferences.getInt(Store.CUR_KERNEL, 0) > 0
+                && sharedPreferences.getInt(Store.CUR_KERNEL, 0) != 0
                 && sharedPreferences.getInt(Store.NEW_KERNEL, 0) > 0) {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(getActivity())
@@ -350,6 +350,7 @@ public class UpdaterFragment extends Fragment {
                 if (editor != null)
                     editor.putInt(Store.NEW_KERNEL,
                             Integer.valueOf(latestRelease.substring(1))).apply();
+
                 if (newVerTV != null)
                     newVerTV.setText(latestRelease);
             }
@@ -365,6 +366,10 @@ public class UpdaterFragment extends Fragment {
         protected String doInBackground(Void... params) {
             String[] version = new String[2];
             version[0] = CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout();
+
+            if (!version[0].contains(Store.IS_ZWLIEW_KERNEL))
+                return Store.NOT_ZWLIEW_KERNEL;
+
             version[1] = String.valueOf(version[0].charAt(23));
             version[0] = String.valueOf(version[0].charAt(22));
 
@@ -378,9 +383,15 @@ public class UpdaterFragment extends Fragment {
         }
 
         protected void onPostExecute(String curVersion) {
-            if (editor != null)
-                editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
-            curVerTV.setText("r" + curVersion);
+            if (editor != null) {
+                if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL)) {
+                    editor.putInt(Store.CUR_KERNEL, -1).apply();
+                    curVerTV.setText(curVersion);
+                } else {
+                    editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
+                    curVerTV.setText("r" + curVersion);
+                }
+            }
         }
     }
 }

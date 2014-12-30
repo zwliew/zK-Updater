@@ -27,6 +27,8 @@ public class Store {
     public static final String DOWNLOAD_URL = SERVER_URL + DEVICE_MODEL + "/releases/zwliew_Kernel-" + DEVICE_MODEL + "-";
     public static final String CHANGELOG_URL = SERVER_URL + DEVICE_MODEL + "/appfiles/changelog.html";
     public static final String ZIP_ENDING = DEVICE_MODEL.equals("ghost") ? ".zip" : ".img";
+    public static final String IS_ZWLIEW_KERNEL = "-zwliew_Kernel-r";
+    public static final String NOT_ZWLIEW_KERNEL = "Not zwliew_Kernel";
     public static final int RC_REQUEST = 12321;
     public static final boolean IS_SUPPORTED = DEVICE_MODEL.equals("ghost") || DEVICE_MODEL.equals("flo");
 

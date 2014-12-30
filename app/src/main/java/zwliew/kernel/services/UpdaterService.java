@@ -33,7 +33,7 @@ public class UpdaterService extends IntentService {
 
         if (sharedPreferences.getInt(Store.CUR_KERNEL, 0) <
                 sharedPreferences.getInt(Store.NEW_KERNEL, 0)
-                && sharedPreferences.getInt(Store.CUR_KERNEL, 0) > 0
+                && sharedPreferences.getInt(Store.CUR_KERNEL, 0) != 0
                 && sharedPreferences.getInt(Store.NEW_KERNEL, 0) > 0) {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(getApplicationContext())
