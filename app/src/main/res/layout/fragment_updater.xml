@@ -23,18 +23,18 @@
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/updater_cur_card_view"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 card_view:cardCornerRadius="4dp">
 
                 <ImageButton
                     android:id="@+id/updater_cur_info"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="start|center_vertical"
                     android:contentDescription="@string/updater_new_title"
                     android:src="@drawable/ic_info" />
@@ -69,18 +69,18 @@
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/updater_new_card_view"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/updater_cur_card_view"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 card_view:cardCornerRadius="4dp">
 
                 <ImageButton
                     android:id="@+id/updater_new_info"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="start|center_vertical"
                     android:contentDescription="@string/updater_new_title"
                     android:src="@drawable/ic_info" />
@@ -114,8 +114,8 @@
                 <ImageButton
                     android:id="@+id/updater_new_log"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="end|center_vertical"
                     android:contentDescription="@string/updater_new_changelog"
                     android:src="@drawable/ic_history" />
@@ -124,18 +124,18 @@
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/updater_support_card_view"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/updater_new_card_view"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 card_view:cardCornerRadius="4dp">
 
                 <ImageButton
                     android:id="@+id/updater_support_info"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="start|center_vertical"
                     android:contentDescription="@string/updater_support_title"
                     android:src="@drawable/ic_info" />
@@ -143,8 +143,8 @@
                 <ImageButton
                     android:id="@+id/updater_support_share"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="36dp"
                     android:layout_marginStart="36dp"
@@ -155,8 +155,8 @@
                 <ImageButton
                     android:id="@+id/updater_support_donate"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginEnd="36dp"
                     android:layout_marginRight="36dp"
