@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -130,22 +131,28 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        FragmentManager fragmentManager = getFragmentManager();
-        switch (position) {
-            case 0:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, UpdaterFragment.newInstance(position))
-                        .commit();
-                break;
-            case 1:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, SettingsFragment.newInstance(position))
-                        .commit();
-                break;
-            default:
-                break;
-        }
+    public void onNavigationDrawerItemSelected(final int position) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentManager fragmentManager = getFragmentManager();
+                switch (position) {
+                    case 0:
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, UpdaterFragment.newInstance(position))
+                                .commit();
+                        break;
+                    case 1:
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, SettingsFragment.newInstance(position))
+                                .commit();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }, 250);
+
     }
 
     public void onSectionAttached(int number) {
