@@ -16,6 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.Helpers;
 
 import butterknife.ButterKnife;
+import zwliew.kernel.fragments.BackupFragment;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
 import zwliew.kernel.services.BootReceiver;
@@ -140,12 +141,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     case 0:
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, UpdaterFragment.newInstance(position))
-                                .commit();
+                                .commitAllowingStateLoss();
                         break;
                     case 1:
                         fragmentManager.beginTransaction()
+                                .replace(R.id.container, BackupFragment.newInstance(position))
+                                .commitAllowingStateLoss();
+                        break;
+                    case 2:
+                        fragmentManager.beginTransaction()
                                 .replace(R.id.container, SettingsFragment.newInstance(position))
-                                .commit();
+                                .commitAllowingStateLoss();
                         break;
                     default:
                         break;
@@ -155,19 +161,21 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
-            case 0:
-                TextView title = (TextView) findViewById(R.id.toolbar_title);
-                if (title != null)
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        if (title != null) {
+            switch (number) {
+                case 0:
                     title.setText(getString(R.string.updater_title));
-                break;
-            case 1:
-                title = (TextView) findViewById(R.id.toolbar_title);
-                if (title != null)
+                    break;
+                case 1:
+                    title.setText(getString(R.string.backup_title));
+                    break;
+                case 2:
                     title.setText(getString(R.string.settings_title));
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

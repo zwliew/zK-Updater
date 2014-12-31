@@ -52,6 +52,9 @@
         <item>Electricity bill - SGD$10</item>
     </string-array>
 
+    <!-- Backup Fragment -->
+    <string name='backup_title'>Backup &amp; Restore</string>
+
     <!-- Settings Fragment -->
     <string name="settings_title">Settings</string>
     <string name="settings_layout_title">SETTINGS</string>
