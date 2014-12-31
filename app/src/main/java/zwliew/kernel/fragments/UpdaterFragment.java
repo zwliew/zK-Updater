@@ -311,7 +311,8 @@ public class UpdaterFragment extends Fragment {
 
         protected void onPostExecute(String latestRelease) {
             if (latestRelease == null) {
-                newVerTV.setText("Unknown");
+                if (newVerTV != null)
+                    newVerTV.setText("Unknown");
             } else {
                 if (editor != null)
                     editor.putInt(Store.NEW_KERNEL,

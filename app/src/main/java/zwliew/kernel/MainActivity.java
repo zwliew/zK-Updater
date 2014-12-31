@@ -47,13 +47,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        /**
-         * As per new Support API we can use a Toolbar instead of a ActionBar. The big difference
-         * functionality wise is that the Toolbar is part of the View hierarchy of your layout
-         * and because of that you have full control over it like a normal View,
-         * which is pretty useful. You can also use a normal Navigation Drawer with it,
-         * but for that you should consult API details as it's not the purpose of this app.
-         */
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

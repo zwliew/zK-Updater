@@ -29,6 +29,7 @@
     <string name="updater_new_changelog">Changelog</string>
     <string name="updater_new_info">This is the latest available release of zwliew_Kernel for your device.</string>
 
+    <!-- Notification -->
     <string name="avail_release">New release available!</string>
 
     <!-- Support -->
@@ -37,10 +38,12 @@
     <string name="updater_support_donate">Donate</string>
     <string name="updater_support_people">Share</string>
 
+    <!-- Share -->
     <string name="share_title">zwliew_Kernel is great!</string>
     <string name="share_desc">Check out zwliew_Kernel, a kernel meant to improve your experience without any tinkering!\n\nG+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
     <string name="share_chooser_title">Share via</string>
 
+    <!-- Donate -->
     <string-array name="donate_items">
         <item>Cup of coffee - SGD$3</item>
         <item>McDonald\'s lunch - SGD$5</item>
