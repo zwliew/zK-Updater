@@ -134,7 +134,8 @@ public class UpdaterFragment extends Fragment {
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        new UpdaterFragment.getKernelInfo().execute();
+        if (Store.IS_SUPPORTED)
+            new UpdaterFragment.getKernelInfo().execute();
 
         if (networkInfo != null && networkInfo.isConnected()) {
             new UpdaterFragment.getURLContent().execute();
@@ -342,8 +343,13 @@ public class UpdaterFragment extends Fragment {
             if (!version[0].contains(Store.IS_ZWLIEW_KERNEL))
                 return Store.NOT_ZWLIEW_KERNEL;
 
-            version[1] = String.valueOf(version[0].charAt(23));
-            version[0] = String.valueOf(version[0].charAt(22));
+            if (Store.DEVICE_MODEL.equals("ghost")) {
+                version[1] = String.valueOf(version[0].charAt(23));
+                version[0] = String.valueOf(version[0].charAt(22));
+            } else {
+                version[1] = String.valueOf(version[0].charAt(22));
+                version[0] = String.valueOf(version[0].charAt(21));
+            }
 
             try {
                 Integer.parseInt(version[1]);
