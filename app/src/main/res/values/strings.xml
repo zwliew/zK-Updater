@@ -45,6 +45,7 @@
 
     <!-- Donate -->
     <string-array name="donate_items">
+        <item>Lollipop - $SGD1</item>
         <item>Cup of coffee - SGD$3</item>
         <item>McDonald\'s lunch - SGD$5</item>
         <item>Bus fare - SGD$8</item>

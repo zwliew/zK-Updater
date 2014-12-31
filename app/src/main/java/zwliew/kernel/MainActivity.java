@@ -152,7 +152,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 }
             }
         }, 250);
-
     }
 
     public void onSectionAttached(int number) {

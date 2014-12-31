@@ -164,23 +164,28 @@ public class UpdaterFragment extends Fragment {
                         switch (which) {
                             case 0:
                                 MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_COFFEE, Store.RC_REQUEST,
+                                        Store.SKU_LOLLIPOP, Store.RC_REQUEST,
                                         mPurchaseFinishedListener, Store.PAYLOAD + "a");
                                 break;
                             case 1:
                                 MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_MCDONALDS, Store.RC_REQUEST,
+                                        Store.SKU_COFFEE, Store.RC_REQUEST,
                                         mPurchaseFinishedListener, Store.PAYLOAD + "s");
                                 break;
                             case 2:
                                 MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_BUS, Store.RC_REQUEST,
+                                        Store.SKU_MCDONALDS, Store.RC_REQUEST,
                                         mPurchaseFinishedListener, Store.PAYLOAD + "d");
                                 break;
                             case 3:
                                 MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_ELECTRICITY, Store.RC_REQUEST,
+                                        Store.SKU_BUS, Store.RC_REQUEST,
                                         mPurchaseFinishedListener, Store.PAYLOAD + "f");
+                                break;
+                            case 4:
+                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
+                                        Store.SKU_ELECTRICITY, Store.RC_REQUEST,
+                                        mPurchaseFinishedListener, Store.PAYLOAD + "g");
                                 break;
                             default:
                                 break;
