@@ -1,6 +1,5 @@
 package zwliew.kernel.fragments;
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Context;
@@ -13,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
@@ -41,14 +42,10 @@ import zwliew.kernel.util.IabResult;
 import zwliew.kernel.util.Purchase;
 
 public class UpdaterFragment extends Fragment {
-    private static String latestRelease;
-    private static TextView newVerTV;
-    private static TextView curVerTV;
-    private static SwipeRefreshLayout swipeLayout;
-
-    private static SharedPreferences sharedPreferences;
-    private static SharedPreferences.Editor editor;
-
+    @InjectView(R.id.updater_new_desc)
+    TextView newVerTV;
+    @InjectView(R.id.swipe_container)
+    SwipeRefreshLayout swipeLayout;
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (MainActivity.mHelper == null)
@@ -72,21 +69,9 @@ public class UpdaterFragment extends Fragment {
             MainActivity.mHelper.consumeAsync(purchase, mConsumeFinishedListener);
         }
     };
-
-    public static UpdaterFragment newInstance(int sectionNumber) {
-        UpdaterFragment fragment = new UpdaterFragment();
-        Bundle args = new Bundle();
-        args.putInt(Store.ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(Store.ARG_SECTION_NUMBER));
-    }
+    private String latestRelease;
+    private SharedPreferences.Editor editor;
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +79,7 @@ public class UpdaterFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_updater, container, false);
         ButterKnife.inject(this, rootView);
 
-        sharedPreferences = getActivity().
+        SharedPreferences sharedPreferences = getActivity().
                 getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
@@ -128,8 +113,7 @@ public class UpdaterFragment extends Fragment {
             }
         });
 
-        curVerTV = (TextView) rootView.findViewById(R.id.updater_cur_desc);
-        newVerTV = (TextView) rootView.findViewById(R.id.updater_new_desc);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -149,7 +133,6 @@ public class UpdaterFragment extends Fragment {
             Toast.makeText(getActivity(),
                     getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
         }
-
         return rootView;
     }
 
@@ -248,15 +231,6 @@ public class UpdaterFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.updater_cur_info)
-    void curInfo() {
-        new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.updater_cur_title))
-                .content(getString(R.string.updater_cur_info))
-                .icon(R.drawable.ic_info)
-                .show();
-    }
-
     @OnClick(R.id.updater_new_info)
     void newInfo() {
         new MaterialDialog.Builder(getActivity())
@@ -288,7 +262,7 @@ public class UpdaterFragment extends Fragment {
         }
     }
 
-    public static class getURLContent extends AsyncTask<Void, Void, String> {
+    private class getURLContent extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... params) {
@@ -316,24 +290,19 @@ public class UpdaterFragment extends Fragment {
 
         protected void onPostExecute(String latestRelease) {
             if (latestRelease == null) {
-                if (newVerTV != null)
-                    newVerTV.setText("Unknown");
+                newVerTV.setText("Unknown");
             } else {
-                if (editor != null)
-                    editor.putInt(Store.NEW_KERNEL,
-                            Integer.valueOf(latestRelease.substring(1))).apply();
+                editor.putInt(Store.NEW_KERNEL,
+                        Integer.valueOf(latestRelease.substring(1))).apply();
 
-                if (newVerTV != null)
-                    newVerTV.setText(latestRelease);
+                newVerTV.setText(latestRelease);
             }
 
-            if (swipeLayout != null)
-                swipeLayout.setRefreshing(false);
+            swipeLayout.setRefreshing(false);
         }
     }
 
-    public static class getKernelInfo extends AsyncTask<Void, Void, String> {
-
+    private class getKernelInfo extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
             String[] version = new String[2];
@@ -360,15 +329,11 @@ public class UpdaterFragment extends Fragment {
         }
 
         protected void onPostExecute(String curVersion) {
-            if (editor != null) {
-                if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL)) {
-                    editor.putInt(Store.CUR_KERNEL, -1).apply();
-                    curVerTV.setText(curVersion);
-                } else {
-                    editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
-                    curVerTV.setText("r" + curVersion);
-                }
-            }
+            toolbar.setSubtitle(CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout());
+            if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL))
+                editor.putInt(Store.CUR_KERNEL, -1).apply();
+            else
+                editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
         }
     }
 }

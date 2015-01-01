@@ -18,8 +18,6 @@
     <string name="no_requirements_desc">This device does not have the appropriate functionality. Please install them before using this app.</string>
 
     <!-- Updater Fragment -->
-    <string name="updater_title">zK Updater</string>
-
     <!-- Current version -->
     <string name="updater_cur_title">Current version</string>
     <string name="updater_cur_info">This is the current release of zwliew_Kernel on your device.</string>

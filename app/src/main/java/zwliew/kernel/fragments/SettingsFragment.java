@@ -1,6 +1,5 @@
 package zwliew.kernel.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.widget.CheckBox;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
 import zwliew.kernel.services.BootReceiver;
@@ -26,21 +24,6 @@ public class SettingsFragment extends Fragment {
     CheckBox autoCheckCB;
     @InjectView(R.id.auto_flash)
     CheckBox autoFlashCB;
-
-    public static SettingsFragment newInstance(int sectionNumber) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putInt(Store.ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(Store.ARG_SECTION_NUMBER));
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

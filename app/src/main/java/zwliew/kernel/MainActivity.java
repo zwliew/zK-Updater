@@ -1,6 +1,5 @@
 package zwliew.kernel;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,12 +9,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.Helpers;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import zwliew.kernel.fragments.BackupFragment;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
@@ -24,10 +23,6 @@ import zwliew.kernel.util.IabHelper;
 import zwliew.kernel.util.IabResult;
 import zwliew.kernel.util.Inventory;
 
-/**
- * The Activity extends ActionBarActivity because that's a requirement per the new API for it to
- * bound with the Toolbar. I suggest you to read Chris Banes (Google programmer) blog about this
- */
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     public static IabHelper mHelper;
@@ -41,6 +36,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 Log.d(Store.TAG, "Failed to query inventory: " + result);
         }
     };
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
@@ -49,14 +46,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer,
-                (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+                (DrawerLayout) findViewById(R.id.drawer), toolbar);
 
         if (!Store.IS_SUPPORTED) {
             new MaterialDialog.Builder(this)
@@ -133,50 +126,36 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
-        new Handler().postDelayed(new Runnable() {
+
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
-                FragmentManager fragmentManager = getFragmentManager();
                 switch (position) {
                     case 0:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, UpdaterFragment.newInstance(position))
-                                .commitAllowingStateLoss();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new UpdaterFragment())
+                                .commit();
+                        toolbar.setTitle(R.string.app_name);
+                        toolbar.setSubtitle(getString(R.string.updater_cur_title) + ": " + getString(R.string.unknown_val));
                         break;
                     case 1:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, BackupFragment.newInstance(position))
-                                .commitAllowingStateLoss();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new BackupFragment())
+                                .commit();
+                        toolbar.setTitle(R.string.backup_title);
+                        toolbar.setSubtitle(null);
                         break;
                     case 2:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, SettingsFragment.newInstance(position))
-                                .commitAllowingStateLoss();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new SettingsFragment())
+                                .commit();
+                        toolbar.setTitle(R.string.settings_title);
+                        toolbar.setSubtitle(null);
                         break;
                     default:
                         break;
                 }
             }
-        }, 150);
+        });
     }
-
-    public void onSectionAttached(int number) {
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
-        if (title != null) {
-            switch (number) {
-                case 0:
-                    title.setText(getString(R.string.updater_title));
-                    break;
-                case 1:
-                    title.setText(getString(R.string.backup_title));
-                    break;
-                case 2:
-                    title.setText(getString(R.string.settings_title));
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
 }
