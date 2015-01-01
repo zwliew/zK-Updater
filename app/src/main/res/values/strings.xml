@@ -4,10 +4,6 @@
     <!-- General -->
     <string name="app_name">zK Updater</string>
 
-    <!-- Navigation drawer -->
-    <string name="drawer_open">Menu opened</string>
-    <string name="drawer_close">Menu closed</string>
-
     <!-- Error -->
     <string name="unknown_val">Unknown</string>
     <string name="no_connection">No connection</string>

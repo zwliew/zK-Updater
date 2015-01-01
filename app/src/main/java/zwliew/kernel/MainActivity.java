@@ -123,7 +123,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             super.onBackPressed();
     }
 
-
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
 

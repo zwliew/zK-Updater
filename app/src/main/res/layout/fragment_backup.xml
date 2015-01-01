@@ -14,7 +14,7 @@
         android:paddingStart="8dp">
 
         <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/ic_save"
+            android:id="@+id/backup_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

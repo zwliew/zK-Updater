@@ -71,17 +71,12 @@ public class UpdaterFragment extends Fragment {
     };
     private String latestRelease;
     private SharedPreferences.Editor editor;
-    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_updater, container, false);
         ButterKnife.inject(this, rootView);
-
-        SharedPreferences sharedPreferences = getActivity().
-                getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
 
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.green,
@@ -113,10 +108,14 @@ public class UpdaterFragment extends Fragment {
             }
         });
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.setSubtitle(CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout());
 
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+        editor = getActivity().getSharedPreferences(
+                Store.PREFERENCES_FILE, Context.MODE_PRIVATE).edit();
 
         if (Store.IS_SUPPORTED)
             new UpdaterFragment.getKernelInfo().execute();
@@ -329,7 +328,6 @@ public class UpdaterFragment extends Fragment {
         }
 
         protected void onPostExecute(String curVersion) {
-            toolbar.setSubtitle(CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout());
             if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL))
                 editor.putInt(Store.CUR_KERNEL, -1).apply();
             else

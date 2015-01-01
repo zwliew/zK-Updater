@@ -24,6 +24,7 @@ public class SettingsFragment extends Fragment {
     CheckBox autoCheckCB;
     @InjectView(R.id.auto_flash)
     CheckBox autoFlashCB;
+    private SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,10 +32,11 @@ public class SettingsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.inject(this, rootView);
 
-        SharedPreferences sharedPref =
-                getActivity().getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        autoCheckCB.setChecked(sharedPref.getBoolean(Store.AUTO_CHECK, true));
-        autoFlashCB.setChecked(sharedPref.getBoolean(Store.AUTO_FLASH, true));
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
+                Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        autoCheckCB.setChecked(sharedPreferences.getBoolean(Store.AUTO_CHECK, true));
+        autoFlashCB.setChecked(sharedPreferences.getBoolean(Store.AUTO_FLASH, true));
 
         return rootView;
     }
@@ -46,9 +48,6 @@ public class SettingsFragment extends Fragment {
         else
             autoCheckCB.setChecked(true);
 
-        SharedPreferences sharedPrefs = getActivity().
-                getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(Store.AUTO_CHECK, autoCheckCB.isChecked()).apply();
 
         if (autoCheckCB.isChecked())
@@ -63,9 +62,6 @@ public class SettingsFragment extends Fragment {
         else
             autoFlashCB.setChecked(true);
 
-        SharedPreferences sharedPrefs = getActivity().
-                getSharedPreferences(Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(Store.AUTO_FLASH, autoFlashCB.isChecked()).apply();
     }
 
