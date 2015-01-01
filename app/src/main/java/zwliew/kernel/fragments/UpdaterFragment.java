@@ -251,7 +251,6 @@ public class UpdaterFragment extends Fragment {
                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                             "zwliew_Kernel-" + Store.DEVICE_MODEL + "-" + latestRelease + Store.ZIP_ENDING);
 
-
             Store.downloadReference = ((DownloadManager) getActivity().
                     getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
 

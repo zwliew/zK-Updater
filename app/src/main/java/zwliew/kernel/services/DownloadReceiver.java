@@ -23,23 +23,26 @@ public class DownloadReceiver extends BroadcastReceiver {
             Cursor cursor = ((DownloadManager) context.getSystemService(
                     Context.DOWNLOAD_SERVICE)).query(new DownloadManager.Query()
                     .setFilterById(reference));
-            cursor.moveToFirst();
-            final String savedFilePath = cursor.getString(cursor.getColumnIndex(
-                    DownloadManager.COLUMN_LOCAL_FILENAME));
+            if (cursor.moveToFirst() &&
+                    DownloadManager.STATUS_SUCCESSFUL == cursor.getInt(cursor.getColumnIndex(
+                            DownloadManager.COLUMN_STATUS))) {
+                final String savedFilePath = cursor.getString(cursor.getColumnIndex(
+                        DownloadManager.COLUMN_LOCAL_FILENAME));
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (Store.DEVICE_MODEL.equals("ghost")) {
-                        CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
-                                "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
-                    } else {
-                        CMDProcessor.runSuCommand("dd if=" + savedFilePath +
-                                " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
-                                Store.REBOOT_CMD);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (Store.DEVICE_MODEL.equals("ghost")) {
+                            CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
+                                    "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
+                        } else {
+                            CMDProcessor.runSuCommand("dd if=" + savedFilePath +
+                                    " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
+                                    Store.REBOOT_CMD);
+                        }
                     }
-                }
-            }).start();
+                }).start();
+            }
         }
     }
 }
