@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     .title(getString(R.string.not_supported_title))
                     .content(getString(R.string.not_supported_desc))
                     .positiveText(android.R.string.ok)
-                    .icon(getResources().getDrawable(R.drawable.ic_warning))
+                    .icon(R.drawable.ic_warning)
                     .dismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     .title(getString(R.string.no_requirements_title))
                     .content(getString(R.string.no_requirements_desc))
                     .positiveText(android.R.string.ok)
-                    .icon(getResources().getDrawable(R.drawable.ic_warning))
+                    .icon(R.drawable.ic_warning)
                     .dismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {

@@ -208,8 +208,7 @@ public class UpdaterFragment extends Fragment {
                 .putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_desc));
 
         if (shareIntent.resolveActivity(getActivity().getPackageManager()) != null)
-            startActivity(Intent.createChooser(shareIntent,
-                    getResources().getString(R.string.share_chooser_title)));
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_chooser_title)));
         else
             Toast.makeText(getActivity(), R.string.app_not_available, Toast.LENGTH_SHORT).show();
     }
@@ -219,7 +218,7 @@ public class UpdaterFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(getString(R.string.updater_support_title))
                 .content(getString(R.string.updater_support_info))
-                .icon(getResources().getDrawable(R.drawable.ic_info))
+                .icon(R.drawable.ic_info)
                 .show();
     }
 
@@ -254,7 +253,7 @@ public class UpdaterFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(getString(R.string.updater_cur_title))
                 .content(getString(R.string.updater_cur_info))
-                .icon(getResources().getDrawable(R.drawable.ic_info))
+                .icon(R.drawable.ic_info)
                 .show();
     }
 
@@ -263,7 +262,7 @@ public class UpdaterFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(getString(R.string.updater_new_title))
                 .content(getString(R.string.updater_new_info))
-                .icon(getResources().getDrawable(R.drawable.ic_info))
+                .icon(R.drawable.ic_info)
                 .show();
     }
 

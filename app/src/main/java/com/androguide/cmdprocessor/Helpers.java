@@ -63,7 +63,7 @@ public class Helpers {
 
     public static String grabString(Context context, int resID) {
         try {
-            return context.getResources().getString(resID);
+            return context.getString(resID);
         } catch (NullPointerException e) {
             Log.e("GRAB_STRING", "" + e);
             return "";
