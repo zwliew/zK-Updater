@@ -8,8 +8,8 @@ android {
         applicationId "zwliew.kernel"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 7
-        versionName "1.0-preFinal1"
+        versionCode 8
+        versionName "1.1"
     }
     buildTypes {
         release {
