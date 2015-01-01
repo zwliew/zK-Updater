@@ -3,7 +3,6 @@ package zwliew.kernel;
 import android.os.Build;
 
 public class Store {
-    public static final String ARG_SECTION_NUMBER = "zwliew.kernel.section_number";
     public static final String PREFERENCES_FILE = "zwliew.kernel.my_app_settings";
     public static final String NEW_KERNEL = "zwliew.kernel.new_kernel";
     public static final String CUR_KERNEL = "zwliew.kernel.cur_kernel";
