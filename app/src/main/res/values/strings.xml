@@ -12,10 +12,10 @@
     <string name="not_supported_desc">This device is not officially supported by zwliew_Kernel.</string>
     <string name="no_requirements_title">No root or busybox</string>
     <string name="no_requirements_desc">This device does not have the appropriate functionality. Please install them before using this app.</string>
+    <string name="invalid_character">Space is an invalid character!</string>
 
     <!-- Updater Fragment -->
     <!-- Current version -->
-    <string name="updater_cur_title">Current version</string>
     <string name="updater_cur_info">This is the current release of zwliew_Kernel on your device.</string>
 
     <!-- Newest version -->
@@ -25,12 +25,6 @@
 
     <!-- Notification -->
     <string name="avail_release">New release available!</string>
-
-    <!-- Support -->
-    <string name="updater_support_title">Support my work</string>
-    <string name="updater_support_info">Support my work by donating or simply sharing the kernel with your friends!</string>
-    <string name="updater_support_donate">Donate</string>
-    <string name="updater_support_people">Share</string>
 
     <!-- Share -->
     <string name="share_title">zwliew_Kernel is great!</string>
@@ -48,18 +42,44 @@
 
     <!-- Backup Fragment -->
     <string name='backup_title'>Backup &amp; Restore</string>
+    <string name="backup_subtitle">No backups</string>
+    <string name="backup_dialog_title">Back up current kernel</string>
+    <string name="backup_dialog_hint">Backup name</string>
 
     <!-- Settings Fragment -->
     <string name="settings_title">Settings</string>
     <string name="settings_layout_title">SETTINGS</string>
+    <string name="settings_subtitle">Updater configuration</string>
 
+    <!-- About -->
     <string name="about_author">About me</string>
     <string name="about_author_name">zwliew</string>
     <string name="about_author_summary">G+: https://plus.google.com/+ZhaoWeiLiew\nXDA: http://forum.xda-developers.com/member.php?u=5604178</string>
 
+    <!-- Settings -->
     <string name="auto_check_desc">Automatically check for newer kernels\neven when you\'re not in the app.</string>
     <string name="auto_check_title">Auto-check for updates</string>
 
     <string name="auto_flash_title">Auto-flash kernels</string>
     <string name="auto_flash_desc">Automatically reboot to recovery\nand flash downloaded kernels.</string>
+    <string name="backup_flash_title">Backup before flash</string>
+    <string name="backup_flash_desc">Backup your current kernel configuration\nbefore auto-flashing a new one.</string>
+
+    <!-- Support -->
+    <string name="support_layout_title">SUPPORT</string>
+
+    <string name="support_email_title">Contact</string>
+    <string name="support_email_desc">Email me if you have any queries\nor issues.</string>
+    <string name="email_chooser_title">Send email via</string>
+
+    <string name="support_me_title">Support my work</string>
+    <string name="support_me_desc">Support my work by sharing the kernel\nor even donating.</string>
+
+    <string-array name="support_me_items">
+        <item>Share the kernel</item>
+        <item>Donate</item>
+    </string-array>
+
+    <string name="support_chooser_title">Support via</string>
+    <string name="updater_support_donate">Donate</string>
 </resources>

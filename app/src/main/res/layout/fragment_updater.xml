@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_container"
+    android:id="@+id/updater_swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,13 +31,13 @@
                 card_view:cardCornerRadius="4dp">
 
                 <ImageButton
-                    android:id="@+id/updater_new_info"
+                    android:id="@+id/updater_new_log"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="@dimen/image_size"
                     android:layout_height="@dimen/image_size"
                     android:layout_gravity="start|center_vertical"
-                    android:contentDescription="@string/updater_new_title"
-                    android:src="@drawable/ic_info" />
+                    android:contentDescription="@string/updater_new_changelog"
+                    android:src="@drawable/ic_history" />
 
                 <TextView
                     android:id="@+id/updater_new_title"
@@ -64,72 +64,6 @@
                     android:layout_marginStart="@dimen/text_view_margin"
                     android:layout_marginTop="43dp"
                     android:text="@string/unknown_val" />
-
-                <ImageButton
-                    android:id="@+id/updater_new_log"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="@dimen/image_size"
-                    android:layout_height="@dimen/image_size"
-                    android:layout_gravity="end|center_vertical"
-                    android:contentDescription="@string/updater_new_changelog"
-                    android:src="@drawable/ic_history" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/updater_support_card_view"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/updater_new_card_view"
-                android:layout_marginTop="6dp"
-                card_view:cardCornerRadius="4dp">
-
-                <ImageButton
-                    android:id="@+id/updater_support_info"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="@dimen/image_size"
-                    android:layout_height="@dimen/image_size"
-                    android:layout_gravity="start|center_vertical"
-                    android:contentDescription="@string/updater_support_title"
-                    android:src="@drawable/ic_info" />
-
-                <ImageButton
-                    android:id="@+id/updater_support_share"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="@dimen/image_size"
-                    android:layout_height="@dimen/image_size"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="36dp"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginTop="4dp"
-                    android:contentDescription="@string/updater_support_people"
-                    android:src="@drawable/ic_share" />
-
-                <ImageButton
-                    android:id="@+id/updater_support_donate"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="@dimen/image_size"
-                    android:layout_height="@dimen/image_size"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="36dp"
-                    android:layout_marginRight="36dp"
-                    android:layout_marginTop="4dp"
-                    android:contentDescription="@string/updater_support_donate"
-                    android:src="@drawable/ic_donate" />
-
-                <TextView
-                    android:id="@+id/updater_support_title"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/updater_support_card_view"
-                    android:layout_alignStart="@id/updater_support_card_view"
-                    android:layout_alignTop="@id/updater_support_card_view"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/updater_support_title"
-                    android:textSize="14sp" />
             </android.support.v7.widget.CardView>
 
             <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"

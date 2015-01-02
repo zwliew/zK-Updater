@@ -10,6 +10,7 @@ import android.database.Cursor;
 import com.androguide.cmdprocessor.CMDProcessor;
 
 import zwliew.kernel.Store;
+import zwliew.kernel.fragments.BackupFragment;
 
 public class DownloadReceiver extends BroadcastReceiver {
     @Override
@@ -29,19 +30,37 @@ public class DownloadReceiver extends BroadcastReceiver {
                 final String savedFilePath = cursor.getString(cursor.getColumnIndex(
                         DownloadManager.COLUMN_LOCAL_FILENAME));
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (Store.DEVICE_MODEL.equals("ghost")) {
-                            CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
-                                    "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
-                        } else {
-                            CMDProcessor.runSuCommand("dd if=" + savedFilePath +
-                                    " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
-                                    Store.REBOOT_CMD);
+                if (sharedPrefs.getBoolean(Store.BACKUP_FLASH, true)) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new BackupFragment.backupKernelTask(context).execute("");
+
+                            if (Store.DEVICE_MODEL.equals("ghost")) {
+                                CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
+                                        "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
+                            } else {
+                                CMDProcessor.runSuCommand("dd if=" + savedFilePath +
+                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
+                                        Store.REBOOT_CMD);
+                            }
                         }
-                    }
-                }).start();
+                    }).start();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Store.DEVICE_MODEL.equals("ghost")) {
+                                CMDProcessor.runSuCommand("echo '--update_package=" + savedFilePath +
+                                        "' > /cache/recovery/command" + "\n" + Store.REBOOT_RECOVERY_CMD);
+                            } else {
+                                CMDProcessor.runSuCommand("dd if=" + savedFilePath +
+                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
+                                        Store.REBOOT_CMD);
+                            }
+                        }
+                    }).start();
+                }
             }
         }
     }

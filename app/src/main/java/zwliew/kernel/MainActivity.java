@@ -126,35 +126,35 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
 
-        new Handler().post(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 switch (position) {
                     case 0:
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.container, new UpdaterFragment())
-                                .commit();
+                                .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.app_name);
-                        toolbar.setSubtitle(getString(R.string.updater_cur_title) + ": " + getString(R.string.unknown_val));
+                        toolbar.setSubtitle(getString(R.string.unknown_val));
                         break;
                     case 1:
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.container, new BackupFragment())
-                                .commit();
+                                .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.backup_title);
-                        toolbar.setSubtitle(null);
+                        toolbar.setSubtitle(getString(R.string.backup_subtitle));
                         break;
                     case 2:
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.container, new SettingsFragment())
-                                .commit();
+                                .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.settings_title);
-                        toolbar.setSubtitle(null);
+                        toolbar.setSubtitle(getString(R.string.settings_subtitle));
                         break;
                     default:
                         break;
                 }
             }
-        });
+        }, 200);
     }
 }

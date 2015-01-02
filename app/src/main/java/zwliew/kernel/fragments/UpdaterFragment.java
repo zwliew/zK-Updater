@@ -3,7 +3,6 @@ package zwliew.kernel.fragments;
 import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,41 +32,15 @@ import java.net.URLConnection;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
-import zwliew.kernel.util.IabHelper;
-import zwliew.kernel.util.IabResult;
-import zwliew.kernel.util.Purchase;
 
 public class UpdaterFragment extends Fragment {
     @InjectView(R.id.updater_new_desc)
     TextView newVerTV;
-    @InjectView(R.id.swipe_container)
+    @InjectView(R.id.updater_swipe_container)
     SwipeRefreshLayout swipeLayout;
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            if (MainActivity.mHelper == null)
-                return;
 
-            if (result.isFailure())
-                Log.d(Store.TAG, "Error while consuming: " + result);
-        }
-    };
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
-            = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            if (MainActivity.mHelper == null)
-                return;
-
-            if (result.isFailure()) {
-                Log.d(Store.TAG, "Error purchasing: " + result);
-                return;
-            }
-
-            MainActivity.mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-        }
-    };
     private String latestRelease;
     private SharedPreferences.Editor editor;
 
@@ -78,7 +50,6 @@ public class UpdaterFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_updater, container, false);
         ButterKnife.inject(this, rootView);
 
-        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.green,
                 R.color.red,
                 R.color.blue,
@@ -96,17 +67,19 @@ public class UpdaterFragment extends Fragment {
                 } else {
                     swipeLayout.setRefreshing(false);
                     Toast.makeText(getActivity(),
-                            getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                            R.string.no_connection, Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        swipeLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeLayout.setRefreshing(true);
-            }
-        });
+        if (swipeLayout != null) {
+            swipeLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeLayout.setRefreshing(true);
+                }
+            });
+        }
 
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setSubtitle(CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout());
@@ -130,78 +103,15 @@ public class UpdaterFragment extends Fragment {
                 }
             });
             Toast.makeText(getActivity(),
-                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                    R.string.no_connection, Toast.LENGTH_SHORT).show();
         }
         return rootView;
     }
 
-    @OnClick(R.id.updater_support_donate)
-    void donateMe() {
-        new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.updater_support_donate))
-                .items(getResources().getStringArray(R.array.donate_items))
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog,
-                                            View view, int which, CharSequence text) {
-                        switch (which) {
-                            case 0:
-                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_LOLLIPOP, Store.RC_REQUEST,
-                                        mPurchaseFinishedListener, Store.PAYLOAD + "a");
-                                break;
-                            case 1:
-                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_COFFEE, Store.RC_REQUEST,
-                                        mPurchaseFinishedListener, Store.PAYLOAD + "s");
-                                break;
-                            case 2:
-                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_MCDONALDS, Store.RC_REQUEST,
-                                        mPurchaseFinishedListener, Store.PAYLOAD + "d");
-                                break;
-                            case 3:
-                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_BUS, Store.RC_REQUEST,
-                                        mPurchaseFinishedListener, Store.PAYLOAD + "f");
-                                break;
-                            case 4:
-                                MainActivity.mHelper.launchPurchaseFlow(getActivity(),
-                                        Store.SKU_ELECTRICITY, Store.RC_REQUEST,
-                                        mPurchaseFinishedListener, Store.PAYLOAD + "g");
-                                break;
-                            default:
-                                break;
-
-                        }
-
-                    }
-                })
-                .positiveText(android.R.string.ok)
-                .show();
-    }
-
-    @OnClick(R.id.updater_support_share)
-    void shareKernel() {
-        Intent shareIntent = new Intent()
-                .setAction(android.content.Intent.ACTION_SEND)
-                .setType("text/plain")
-                .putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_title))
-                .putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_desc));
-
-        if (shareIntent.resolveActivity(getActivity().getPackageManager()) != null)
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_chooser_title)));
-        else
-            Toast.makeText(getActivity(), R.string.app_not_available, Toast.LENGTH_SHORT).show();
-    }
-
-    @OnClick(R.id.updater_support_info)
-    void supportInfo() {
-        new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.updater_support_title))
-                .content(getString(R.string.updater_support_info))
-                .icon(R.drawable.ic_info)
-                .show();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     @OnClick(R.id.updater_new_log)
@@ -221,22 +131,13 @@ public class UpdaterFragment extends Fragment {
             });
 
             new MaterialDialog.Builder(getActivity())
-                    .title(getString(R.string.updater_new_changelog))
+                    .title(R.string.updater_new_changelog)
                     .customView(webView, false)
                     .show();
         } else {
             Toast.makeText(getActivity(),
-                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                    R.string.no_connection, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @OnClick(R.id.updater_new_info)
-    void newInfo() {
-        new MaterialDialog.Builder(getActivity())
-                .title(getString(R.string.updater_new_title))
-                .content(getString(R.string.updater_new_info))
-                .icon(R.drawable.ic_info)
-                .show();
     }
 
     @OnClick(R.id.download_button)
@@ -256,7 +157,7 @@ public class UpdaterFragment extends Fragment {
 
         } else {
             Toast.makeText(getActivity(),
-                    getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                    R.string.no_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -267,11 +168,9 @@ public class UpdaterFragment extends Fragment {
             URL url;
 
             try {
-                // get URL content
                 url = new URL(Store.LATEST_RELEASE_URL);
                 URLConnection conn = url.openConnection();
 
-                // open the stream and put it into BufferedReader
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(conn.getInputStream()));
 
@@ -293,14 +192,17 @@ public class UpdaterFragment extends Fragment {
                 editor.putInt(Store.NEW_KERNEL,
                         Integer.valueOf(latestRelease.substring(1))).apply();
 
-                newVerTV.setText(latestRelease);
+                if (newVerTV != null)
+                    newVerTV.setText(latestRelease);
             }
 
-            swipeLayout.setRefreshing(false);
+            if (swipeLayout != null)
+                swipeLayout.setRefreshing(false);
         }
     }
 
     private class getKernelInfo extends AsyncTask<Void, Void, String> {
+
         @Override
         protected String doInBackground(Void... params) {
             String[] version = new String[2];
