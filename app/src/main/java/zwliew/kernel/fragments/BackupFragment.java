@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -37,16 +36,13 @@ import zwliew.kernel.Store;
  * TODO: Add restore functionality (basically just copy of DownloadReceiver)
  */
 public class BackupFragment extends Fragment {
+    private static Toolbar toolbar;
+    private static RecyclerView backupList;
+    private static List<BackupItem> items = new ArrayList<>();
+    private static List<BackupItem> backupItemList;
+    private static BackupListAdapter adapter;
     @InjectView(R.id.backup_swipe_container)
     SwipeRefreshLayout swipeLayout;
-    @InjectView(R.id.backup_list)
-    RecyclerView backupList;
-
-    private Toolbar toolbar;
-
-    private List<BackupItem> items = new ArrayList<>();
-    private List<BackupItem> backupItemList;
-    private BackupListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,8 +50,9 @@ public class BackupFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_backup, container, false);
         ButterKnife.inject(this, rootView);
 
-        items.add(new BackupItem(getString(R.string.no_backup_file),
-                Environment.getExternalStorageDirectory() + "/zK_Updater"));
+        backupList = (RecyclerView) rootView.findViewById(R.id.backup_list);
+
+        items.add(new BackupItem(getString(R.string.no_backup_file), Store.BACKUP_DIR));
         backupItemList = items;
         adapter = new BackupListAdapter(backupItemList);
         backupList.setAdapter(adapter);
@@ -109,7 +106,6 @@ public class BackupFragment extends Fragment {
                 .customView(R.layout.edittext_dialog, false)
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
-                .negativeColor(getResources().getColor(android.R.color.black))
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -138,7 +134,6 @@ public class BackupFragment extends Fragment {
 
                     }
                 })
-                .build()
                 .show();
     }
 
@@ -157,32 +152,30 @@ public class BackupFragment extends Fragment {
                         Store.PREFERENCES_FILE, Context.MODE_PRIVATE).getInt(Store.CUR_KERNEL, 0));
 
                 CMDProcessor.runSuCommand("dd if=/dev/block/platform/msm_sdcc.1/by-name/boot" +
-                        " of=" + Environment.getExternalStorageDirectory() + "/zK_Updater/" +
-                        kernel + ".img");
+                        " of=" + Store.BACKUP_DIR + kernel + ".img");
             } else {
                 CMDProcessor.runSuCommand("dd if=/dev/block/platform/msm_sdcc.1/by-name/boot" +
-                        " of=" + Environment.getExternalStorageDirectory() + "/zK_Updater/" +
-                        strings[0] + ".img");
+                        " of=" + Store.BACKUP_DIR + strings[0] + ".img");
             }
 
             return null;
         }
     }
 
-    private class getBackupCount extends AsyncTask<Void, Void, Integer> {
+    public static class getBackupCount extends AsyncTask<Void, Void, Integer> {
 
         @Override
         protected Integer doInBackground(Void... voids) {
             int backupCount = 0;
             File file;
-            File folder = new File(Environment.getExternalStorageDirectory() + "/zK_Updater");
+            File folder = new File(Store.BACKUP_DIR);
             String[] fileNames = folder.list();
 
             items.clear();
 
             if (!folder.exists() || fileNames.length == 0) {
                 folder.mkdir();
-                items.add(new BackupItem(getString(R.string.no_backup_file), String.valueOf(folder)));
+                items.add(new BackupItem("No backups found", String.valueOf(folder)));
 
                 return backupCount;
             }
@@ -191,7 +184,7 @@ public class BackupFragment extends Fragment {
                 if (fileName.substring(fileName.length() - 4).equals(".img")) {
                     backupCount++;
 
-                    file = new File(Environment.getExternalStorageDirectory() + "/zK_Updater/" + fileName);
+                    file = new File(folder, fileName);
                     items.add(new BackupItem(fileName, String.valueOf(file.length() / 1048576) + " MB"));
                 }
             }

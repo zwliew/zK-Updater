@@ -3,6 +3,8 @@
 
     <!-- General -->
     <string name="app_name">zK Updater</string>
+    <string name="agree">Agree</string>
+    <string name="disagree">Disagree</string>
 
     <!-- Error -->
     <string name="unknown_val">Unknown</string>
@@ -46,6 +48,17 @@
     <string name="backup_subtitle">No backups</string>
     <string name="backup_dialog_title">Back up current kernel</string>
     <string name="backup_dialog_hint">Backup name</string>
+
+    <string name="restore_title">Reboot after restore?</string>
+    <string name="restore_desc">Automatically reboot your device after restoring the selected kernel.</string>
+
+    <string name="rename_title">Rename to?</string>
+
+    <string-array name="kernel_backup_items">
+        <item>Restore</item>
+        <item>Rename</item>
+        <item>Remove</item>
+    </string-array>
 
     <!-- Settings Fragment -->
     <string name="settings_title">Settings</string>
