@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/fragment_drawer"
-        android:name="zwliew.kernel.NavigationDrawerFragment"
+        android:name="zwliew.kernel.navigationdrawer.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"

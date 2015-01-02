@@ -149,7 +149,7 @@ public final class FloatLabelLayout extends FrameLayout {
         mLabel.setVisibility(View.VISIBLE);
         mLabel.setAlpha(0f);
         mLabel.setTranslationY(mLabel.getHeight());
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mLabel.animate()
                     .alpha(1f)
                     .translationY(0f)
@@ -167,7 +167,7 @@ public final class FloatLabelLayout extends FrameLayout {
     private void hideLabel() {
         mLabel.setAlpha(1f);
         mLabel.setTranslationY(0f);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mLabel.animate()
                     .alpha(0f)
                     .translationY(mLabel.getHeight())

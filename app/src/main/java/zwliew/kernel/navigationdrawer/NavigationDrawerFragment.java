@@ -1,4 +1,4 @@
-package zwliew.kernel;
+package zwliew.kernel.navigationdrawer;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import zwliew.kernel.R;
+import zwliew.kernel.Store;
 
 public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";

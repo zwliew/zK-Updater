@@ -18,6 +18,13 @@
             android:paddingRight="8dp"
             android:paddingStart="8dp">
 
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/backup_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity" />
+
             <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/backup_button"
                 android:layout_width="wrap_content"
@@ -33,7 +40,6 @@
                 fab:fab_colorNormal="@color/accent"
                 fab:fab_colorPressed="@color/accent_light"
                 fab:fab_colorRipple="@color/ripple" />
-
         </RelativeLayout>
     </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

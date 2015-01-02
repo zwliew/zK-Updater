@@ -13,6 +13,7 @@
     <string name="no_requirements_title">No root or busybox</string>
     <string name="no_requirements_desc">This device does not have the appropriate functionality. Please install them before using this app.</string>
     <string name="invalid_character">Space is an invalid character!</string>
+    <string name="no_backup_file">No backups found</string>
 
     <!-- Updater Fragment -->
     <!-- Current version -->

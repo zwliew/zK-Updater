@@ -1,4 +1,4 @@
-package zwliew.kernel;
+package zwliew.kernel.navigationdrawer;
 
 public interface NavigationDrawerCallbacks {
     void onNavigationDrawerItemSelected(int position);

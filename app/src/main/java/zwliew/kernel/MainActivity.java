@@ -18,6 +18,8 @@ import butterknife.InjectView;
 import zwliew.kernel.fragments.BackupFragment;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
+import zwliew.kernel.navigationdrawer.NavigationDrawerCallbacks;
+import zwliew.kernel.navigationdrawer.NavigationDrawerFragment;
 import zwliew.kernel.services.BootReceiver;
 import zwliew.kernel.util.IabHelper;
 import zwliew.kernel.util.IabResult;

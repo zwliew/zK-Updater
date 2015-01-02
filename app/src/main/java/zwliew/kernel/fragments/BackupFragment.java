@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +21,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.CMDProcessor;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import zwliew.kernel.BackupItem;
+import zwliew.kernel.BackupListAdapter;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
 
@@ -30,15 +37,39 @@ import zwliew.kernel.Store;
  * TODO: Add restore functionality (basically just copy of DownloadReceiver)
  */
 public class BackupFragment extends Fragment {
-    Toolbar toolbar;
     @InjectView(R.id.backup_swipe_container)
     SwipeRefreshLayout swipeLayout;
+    @InjectView(R.id.backup_list)
+    RecyclerView backupList;
+
+    private Toolbar toolbar;
+
+    private List<BackupItem> items = new ArrayList<>();
+    private List<BackupItem> backupItemList;
+    private BackupListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_backup, container, false);
         ButterKnife.inject(this, rootView);
+
+        items.add(new BackupItem(getString(R.string.no_backup_file),
+                Environment.getExternalStorageDirectory() + "/zK_Updater"));
+        backupItemList = items;
+        adapter = new BackupListAdapter(backupItemList);
+        backupList.setAdapter(adapter);
+        backupList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        backupList.setItemAnimator(new DefaultItemAnimator());
+        backupList.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
@@ -142,19 +173,30 @@ public class BackupFragment extends Fragment {
 
         @Override
         protected Integer doInBackground(Void... voids) {
-
+            int backupCount = 0;
+            File file;
             File folder = new File(Environment.getExternalStorageDirectory() + "/zK_Updater");
             String[] fileNames = folder.list();
-            int backupCount = 0;
-            try {
-                for (String fileName : fileNames) {
-                    if (fileName.substring(fileName.length() - 4).equals(".img")) {
-                        backupCount++;
-                    }
-                }
-            } catch (NullPointerException e) {
+
+            items.clear();
+
+            if (!folder.exists() || fileNames.length == 0) {
                 folder.mkdir();
+                items.add(new BackupItem(getString(R.string.no_backup_file), String.valueOf(folder)));
+
+                return backupCount;
             }
+
+            for (String fileName : fileNames) {
+                if (fileName.substring(fileName.length() - 4).equals(".img")) {
+                    backupCount++;
+
+                    file = new File(Environment.getExternalStorageDirectory() + "/zK_Updater/" + fileName);
+                    items.add(new BackupItem(fileName, String.valueOf(file.length() / 1048576) + " MB"));
+                }
+            }
+
+            backupItemList = items;
 
             return backupCount;
         }
@@ -164,6 +206,9 @@ public class BackupFragment extends Fragment {
                 toolbar.setSubtitle(String.valueOf(backupCount) + " backup");
             else
                 toolbar.setSubtitle(String.valueOf(backupCount) + " backups");
+
+            if (backupList != null)
+                backupList.setAdapter(adapter);
         }
     }
 }

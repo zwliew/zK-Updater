@@ -73,15 +73,6 @@ public class UpdaterFragment extends Fragment {
             }
         });
 
-        if (swipeLayout != null) {
-            swipeLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeLayout.setRefreshing(true);
-                }
-            });
-        }
-
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
@@ -89,6 +80,14 @@ public class UpdaterFragment extends Fragment {
 
         editor = getActivity().getSharedPreferences(
                 Store.PREFERENCES_FILE, Context.MODE_PRIVATE).edit();
+
+        swipeLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (swipeLayout != null)
+                    swipeLayout.setRefreshing(true);
+            }
+        });
 
         if (Store.IS_SUPPORTED)
             new UpdaterFragment.getKernelInfo().execute();
@@ -234,7 +233,7 @@ public class UpdaterFragment extends Fragment {
                 toolbar.setSubtitle(curVersion);
             } else {
                 editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
-                toolbar.setSubtitle("zwliew_Kernel-r" + curVersion);
+                toolbar.setSubtitle("zwliew_Kernel r" + curVersion);
             }
         }
     }
