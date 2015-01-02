@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,7 +18,7 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:gravity="bottom"
-            android:minHeight="?android:attr/actionBarSize"
+            android:minHeight="?attr/actionBarSize"
             android:paddingBottom="16dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -26,10 +27,10 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
             android:animateLayoutChanges="true"
             android:foreground="?android:windowContentOverlay" />
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <fragment
         android:id="@+id/fragment_drawer"

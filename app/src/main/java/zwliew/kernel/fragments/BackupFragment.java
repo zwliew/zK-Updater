@@ -31,16 +31,13 @@ import zwliew.kernel.BackupListAdapter;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
 
-/*
- * TODO: Add RecyclerView showing all the .img files in the directory
- * TODO: Add restore functionality (basically just copy of DownloadReceiver)
- */
 public class BackupFragment extends Fragment {
     private static Toolbar toolbar;
     private static RecyclerView backupList;
     private static List<BackupItem> items = new ArrayList<>();
     private static List<BackupItem> backupItemList;
     private static BackupListAdapter adapter;
+
     @InjectView(R.id.backup_swipe_container)
     SwipeRefreshLayout swipeLayout;
 
@@ -59,12 +56,12 @@ public class BackupFragment extends Fragment {
         backupList.setLayoutManager(new LinearLayoutManager(getActivity()));
         backupList.setItemAnimator(new DefaultItemAnimator());
         backupList.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
-                int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                swipeLayout.setEnabled(topRowVerticalPosition >= 0);
+                
+                swipeLayout.setEnabled((recyclerView.getChildCount() == 0 ? 0 : recyclerView.getChildAt(0).getTop()) >= 0);
             }
         });
 
