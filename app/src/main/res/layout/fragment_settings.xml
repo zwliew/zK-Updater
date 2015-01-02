@@ -88,7 +88,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:text="@string/auto_check_desc" />
 
-            <android.widget.CheckBox
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/auto_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:text="@string/auto_flash_desc" />
 
-            <android.widget.CheckBox
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/auto_flash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:text="@string/backup_flash_desc" />
 
-            <android.widget.CheckBox
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/backup_flash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

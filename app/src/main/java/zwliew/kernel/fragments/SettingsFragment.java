@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -29,11 +29,11 @@ import zwliew.kernel.util.Purchase;
 public class SettingsFragment extends Fragment {
 
     @InjectView(R.id.auto_check)
-    CheckBox autoCheckCB;
+    SwitchCompat autoCheckSwitch;
     @InjectView(R.id.auto_flash)
-    CheckBox autoFlashCB;
+    SwitchCompat autoFlashSwitch;
     @InjectView(R.id.backup_flash)
-    CheckBox backupFlashCB;
+    SwitchCompat backupFlashSwitch;
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (MainActivity.mHelper == null)
@@ -68,9 +68,9 @@ public class SettingsFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
                 Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        autoCheckCB.setChecked(sharedPreferences.getBoolean(Store.AUTO_CHECK, true));
-        autoFlashCB.setChecked(sharedPreferences.getBoolean(Store.AUTO_FLASH, true));
-        backupFlashCB.setChecked(sharedPreferences.getBoolean(Store.BACKUP_FLASH, true));
+        autoCheckSwitch.setChecked(sharedPreferences.getBoolean(Store.AUTO_CHECK, true));
+        autoFlashSwitch.setChecked(sharedPreferences.getBoolean(Store.AUTO_FLASH, true));
+        backupFlashSwitch.setChecked(sharedPreferences.getBoolean(Store.BACKUP_FLASH, true));
 
         return rootView;
     }
@@ -83,36 +83,36 @@ public class SettingsFragment extends Fragment {
 
     @OnClick(R.id.auto_check_layout)
     void autoCheckToggle() {
-        if (autoCheckCB.isChecked())
-            autoCheckCB.setChecked(false);
+        if (autoCheckSwitch.isChecked())
+            autoCheckSwitch.setChecked(false);
         else
-            autoCheckCB.setChecked(true);
+            autoCheckSwitch.setChecked(true);
 
-        editor.putBoolean(Store.AUTO_CHECK, autoCheckCB.isChecked()).apply();
+        editor.putBoolean(Store.AUTO_CHECK, autoCheckSwitch.isChecked()).apply();
 
-        if (autoCheckCB.isChecked())
+        if (autoCheckSwitch.isChecked())
             BootReceiver.scheduleAlarms(getActivity());
 
     }
 
     @OnClick(R.id.auto_flash_layout)
     void autoFlashToggle() {
-        if (autoFlashCB.isChecked())
-            autoFlashCB.setChecked(false);
+        if (autoFlashSwitch.isChecked())
+            autoFlashSwitch.setChecked(false);
         else
-            autoFlashCB.setChecked(true);
+            autoFlashSwitch.setChecked(true);
 
-        editor.putBoolean(Store.AUTO_FLASH, autoFlashCB.isChecked()).apply();
+        editor.putBoolean(Store.AUTO_FLASH, autoFlashSwitch.isChecked()).apply();
     }
 
     @OnClick(R.id.backup_flash_layout)
     void backupBeforeFlashToggle() {
-        if (backupFlashCB.isChecked())
-            backupFlashCB.setChecked(false);
+        if (backupFlashSwitch.isChecked())
+            backupFlashSwitch.setChecked(false);
         else
-            backupFlashCB.setChecked(true);
+            backupFlashSwitch.setChecked(true);
 
-        editor.putBoolean(Store.BACKUP_FLASH, backupFlashCB.isChecked()).apply();
+        editor.putBoolean(Store.BACKUP_FLASH, backupFlashSwitch.isChecked()).apply();
     }
 
     @OnClick(R.id.about)
