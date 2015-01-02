@@ -40,6 +40,7 @@ public class UpdaterFragment extends Fragment {
     TextView newVerTV;
     @InjectView(R.id.updater_swipe_container)
     SwipeRefreshLayout swipeLayout;
+    Toolbar toolbar;
 
     private String latestRelease;
     private SharedPreferences.Editor editor;
@@ -81,8 +82,7 @@ public class UpdaterFragment extends Fragment {
             });
         }
 
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setSubtitle(CMDProcessor.runShellCommand(Store.SYSTEM_INFO_CMD).getStdout());
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
                 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -229,10 +229,13 @@ public class UpdaterFragment extends Fragment {
         }
 
         protected void onPostExecute(String curVersion) {
-            if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL))
+            if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL)) {
                 editor.putInt(Store.CUR_KERNEL, -1).apply();
-            else
+                toolbar.setSubtitle(curVersion);
+            } else {
                 editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
+                toolbar.setSubtitle("zwliew_Kernel-r" + curVersion);
+            }
         }
     }
 }
