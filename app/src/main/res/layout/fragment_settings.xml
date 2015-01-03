@@ -275,9 +275,6 @@
                 android:layout_below="@id/support_title"
                 android:layout_gravity="center_vertical|start"
                 android:text="@string/support_me_desc" />
-
         </RelativeLayout>
-
-
     </LinearLayout>
 </ScrollView>

@@ -151,7 +151,6 @@ public class BackupFragment extends Fragment {
 
         @Override
         protected Integer doInBackground(Void... voids) {
-
             int backupCount = 0;
             long latestModified = 0;
 
