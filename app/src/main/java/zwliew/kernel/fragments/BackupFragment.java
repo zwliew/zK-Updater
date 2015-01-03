@@ -31,6 +31,9 @@ import zwliew.kernel.BackupListAdapter;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
 
+/*
+ * TODO: Fix java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid item position
+ */
 public class BackupFragment extends Fragment {
     private static Toolbar toolbar;
     private static RecyclerView backupList;
@@ -47,12 +50,8 @@ public class BackupFragment extends Fragment {
         backupList = (RecyclerView) rootView.findViewById(R.id.backup_list);
 
         backupItemList.add(new BackupItem(getString(R.string.no_backup_file), Store.BACKUP_DIR));
-        try {
-            adapter = new BackupListAdapter(backupItemList);
-            backupList.setAdapter(adapter);
-        } catch (IndexOutOfBoundsException e) {
-
-        }
+        adapter = new BackupListAdapter(backupItemList);
+        backupList.setAdapter(adapter);
         backupList.setLayoutManager(new LinearLayoutManager(getActivity()));
         backupList.setItemAnimator(new DefaultItemAnimator());
         backupList.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -60,7 +59,7 @@ public class BackupFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                
+
                 swipeLayout.setEnabled((recyclerView.getChildCount() == 0 ? 0 : recyclerView.getChildAt(0).getTop()) >= 0);
             }
         });
@@ -152,6 +151,7 @@ public class BackupFragment extends Fragment {
 
         @Override
         protected Integer doInBackground(Void... voids) {
+
             int backupCount = 0;
             long latestModified = 0;
 
