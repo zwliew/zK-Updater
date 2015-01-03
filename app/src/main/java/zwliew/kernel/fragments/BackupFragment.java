@@ -21,10 +21,10 @@ import com.androguide.cmdprocessor.CMDProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import zwliew.kernel.BackupItem;
 import zwliew.kernel.BackupListAdapter;
@@ -34,12 +34,9 @@ import zwliew.kernel.Store;
 public class BackupFragment extends Fragment {
     private static Toolbar toolbar;
     private static RecyclerView backupList;
-    private static List<BackupItem> items = new ArrayList<>();
-    private static List<BackupItem> backupItemList;
+    private static List<BackupItem> backupItemList = new ArrayList<>();
     private static BackupListAdapter adapter;
-
-    @InjectView(R.id.backup_swipe_container)
-    SwipeRefreshLayout swipeLayout;
+    private static SwipeRefreshLayout swipeLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,10 +46,13 @@ public class BackupFragment extends Fragment {
 
         backupList = (RecyclerView) rootView.findViewById(R.id.backup_list);
 
-        items.add(new BackupItem(getString(R.string.no_backup_file), Store.BACKUP_DIR));
-        backupItemList = items;
-        adapter = new BackupListAdapter(backupItemList);
-        backupList.setAdapter(adapter);
+        backupItemList.add(new BackupItem(getString(R.string.no_backup_file), Store.BACKUP_DIR));
+        try {
+            adapter = new BackupListAdapter(backupItemList);
+            backupList.setAdapter(adapter);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
         backupList.setLayoutManager(new LinearLayoutManager(getActivity()));
         backupList.setItemAnimator(new DefaultItemAnimator());
         backupList.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -66,6 +66,7 @@ public class BackupFragment extends Fragment {
         });
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.backup_swipe_container);
 
         swipeLayout.setColorSchemeResources(R.color.green,
                 R.color.red,
@@ -74,13 +75,6 @@ public class BackupFragment extends Fragment {
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.setRefreshing(false);
-                    }
-                }, 200);
-
                 new getBackupCount().execute();
             }
         });
@@ -118,13 +112,6 @@ public class BackupFragment extends Fragment {
                                 }
                             });
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeLayout.setRefreshing(false);
-                                }
-                            }, 2350);
-
                             new backupKernelTask(getActivity()).execute(backupName.getText().toString());
                             new getBackupCount().execute();
                         }
@@ -161,44 +148,56 @@ public class BackupFragment extends Fragment {
 
     public static class getBackupCount extends AsyncTask<Void, Void, Integer> {
 
+        private String latestFile;
+
         @Override
         protected Integer doInBackground(Void... voids) {
             int backupCount = 0;
+            long latestModified = 0;
+
             File file;
             File folder = new File(Store.BACKUP_DIR);
             String[] fileNames = folder.list();
+            Arrays.sort(fileNames);
 
-            items.clear();
+            backupItemList.clear();
 
             if (!folder.exists() || fileNames.length == 0) {
                 folder.mkdir();
-                items.add(new BackupItem("No backups found", String.valueOf(folder)));
+                backupItemList.add(new BackupItem("No backups found", String.valueOf(folder)));
 
                 return backupCount;
             }
 
             for (String fileName : fileNames) {
                 if (fileName.substring(fileName.length() - 4).equals(".img")) {
+
                     backupCount++;
 
                     file = new File(folder, fileName);
-                    items.add(new BackupItem(fileName, String.valueOf(file.length() / 1048576) + " MB"));
+                    backupItemList.add(new BackupItem(fileName, String.valueOf(file.length() / 1048576) + " MB"));
+
+                    if (file.lastModified() > latestModified) {
+                        latestModified = file.lastModified();
+                        latestFile = fileName;
+                    }
                 }
             }
-
-            backupItemList = items;
 
             return backupCount;
         }
 
         protected void onPostExecute(Integer backupCount) {
-            if (backupCount == 1)
-                toolbar.setSubtitle(String.valueOf(backupCount) + " backup");
+            if (latestFile != null)
+                toolbar.setSubtitle("Latest backup: " + latestFile);
             else
-                toolbar.setSubtitle(String.valueOf(backupCount) + " backups");
+                toolbar.setSubtitle("No backups found");
 
             if (backupList != null)
                 backupList.setAdapter(adapter);
+
+            if (swipeLayout != null)
+                swipeLayout.setRefreshing(false);
         }
     }
 }

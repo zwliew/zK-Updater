@@ -11,5 +11,5 @@
      https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">304dp</dimen>
 
-    <dimen name="extended_toolbar">128dp</dimen>
+    <dimen name="extended_toolbar">112dp</dimen>
 </resources>

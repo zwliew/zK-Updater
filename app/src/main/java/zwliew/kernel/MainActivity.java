@@ -137,14 +137,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 .replace(R.id.container, new UpdaterFragment())
                                 .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.app_name);
-                        toolbar.setSubtitle(getString(R.string.unknown_val));
+                        toolbar.setSubtitle(getString(R.string.updater_new_title) + ": " + getString(R.string.unknown_val));
                         break;
                     case 1:
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.container, new BackupFragment())
                                 .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.backup_title);
-                        toolbar.setSubtitle(getString(R.string.backup_subtitle));
+                        toolbar.setSubtitle(getString(R.string.no_backup_file));
                         break;
                     case 2:
                         getFragmentManager().beginTransaction()

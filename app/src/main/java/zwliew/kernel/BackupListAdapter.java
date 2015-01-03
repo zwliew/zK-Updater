@@ -31,8 +31,12 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
 
     @Override
     public void onBindViewHolder(BackupListAdapter.ViewHolder holder, int position) {
-        holder.backupTitle.setText(mData.get(position).getTitle());
-        holder.backupDesc.setText(mData.get(position).getDesc());
+        try {
+            holder.backupTitle.setText(mData.get(position).getTitle());
+            holder.backupDesc.setText(mData.get(position).getDesc());
+        } catch (IndexOutOfBoundsException e) {
+
+        }
     }
 
     @Override
@@ -53,6 +57,10 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
 
         @Override
         public void onClick(View view) {
+            if (backupTitle.getText().equals(
+                    itemView.getContext().getString(R.string.no_backup_file)))
+                return;
+
             new MaterialDialog.Builder(itemView.getContext())
                     .title(backupTitle.getText())
                     .titleColor(itemView.getResources().getColor(R.color.accent))

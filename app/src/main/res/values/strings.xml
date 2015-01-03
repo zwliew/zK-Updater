@@ -18,11 +18,8 @@
     <string name="no_backup_file">No backups found</string>
 
     <!-- Updater Fragment -->
-    <!-- Current version -->
-    <string name="updater_cur_info">This is the current release of zwliew_Kernel on your device.</string>
-
     <!-- Newest version -->
-    <string name="updater_new_title">Newest version</string>
+    <string name="updater_new_title">Latest kernel</string>
     <string name="updater_new_changelog">Changelog</string>
     <string name="updater_new_info">This is the latest available release of zwliew_Kernel for your device.</string>
 
@@ -45,7 +42,6 @@
 
     <!-- Backup Fragment -->
     <string name='backup_title'>Backup &amp; Restore</string>
-    <string name="backup_subtitle">No backups</string>
     <string name="backup_dialog_title">Back up current kernel</string>
     <string name="backup_dialog_hint">Backup name</string>
 

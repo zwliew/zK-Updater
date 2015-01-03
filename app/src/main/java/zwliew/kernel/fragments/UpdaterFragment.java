@@ -192,7 +192,7 @@ public class UpdaterFragment extends Fragment {
                         Integer.valueOf(latestRelease.substring(1))).apply();
 
                 if (newVerTV != null)
-                    newVerTV.setText(latestRelease);
+                    newVerTV.setText("zwliew_Kernel " + latestRelease);
             }
 
             if (swipeLayout != null)
@@ -230,10 +230,10 @@ public class UpdaterFragment extends Fragment {
         protected void onPostExecute(String curVersion) {
             if (curVersion.equals(Store.NOT_ZWLIEW_KERNEL)) {
                 editor.putInt(Store.CUR_KERNEL, -1).apply();
-                toolbar.setSubtitle(curVersion);
+                toolbar.setSubtitle("Current kernel: " + curVersion);
             } else {
                 editor.putInt(Store.CUR_KERNEL, Integer.valueOf(curVersion)).apply();
-                toolbar.setSubtitle("zwliew_Kernel r" + curVersion);
+                toolbar.setSubtitle("Current kernel: zwliew_Kernel r" + curVersion);
             }
         }
     }
