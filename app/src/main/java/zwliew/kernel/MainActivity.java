@@ -127,7 +127,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(final int position) {
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
