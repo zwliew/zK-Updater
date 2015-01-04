@@ -34,6 +34,7 @@ public class SettingsFragment extends Fragment {
     SwitchCompat autoFlashSwitch;
     @InjectView(R.id.backup_flash)
     SwitchCompat backupFlashSwitch;
+
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             if (MainActivity.mHelper == null)
@@ -197,6 +198,7 @@ public class SettingsFragment extends Fragment {
                                             }
                                         })
                                         .positiveText(android.R.string.ok)
+                                        .negativeText(android.R.string.cancel)
                                         .show();
                                 break;
                             default:
