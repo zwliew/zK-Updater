@@ -157,7 +157,6 @@ public class BackupFragment extends Fragment {
             File file;
             File folder = new File(Store.BACKUP_DIR);
             String[] fileNames = folder.list();
-            Arrays.sort(fileNames);
 
             backupItemList.clear();
 
@@ -167,6 +166,8 @@ public class BackupFragment extends Fragment {
 
                 return backupCount;
             }
+
+            Arrays.sort(fileNames);
 
             for (String fileName : fileNames) {
                 if (fileName.substring(fileName.length() - 4).equals(".img")) {
