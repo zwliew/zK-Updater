@@ -138,6 +138,7 @@ public class SettingsFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.support_chooser_title)
                 .items(R.array.support_me_items)
+                .negativeText(android.R.string.cancel)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {

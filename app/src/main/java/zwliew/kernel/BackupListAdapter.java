@@ -19,8 +19,8 @@ import zwliew.kernel.fragments.BackupFragment;
 public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.ViewHolder> {
     private List<BackupItem> mData;
 
-    public BackupListAdapter(List<BackupItem> mData) {
-        this.mData = mData;
+    public BackupListAdapter(List<BackupItem> data) {
+        mData = data;
     }
 
     @Override
