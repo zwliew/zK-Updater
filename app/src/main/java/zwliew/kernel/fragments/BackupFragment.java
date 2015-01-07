@@ -18,14 +18,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.CMDProcessor;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import zwliew.kernel.BackupItem;
 import zwliew.kernel.BackupListAdapter;
 import zwliew.kernel.R;
@@ -45,7 +44,6 @@ public class BackupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_backup, container, false);
-        ButterKnife.inject(this, rootView);
 
         backupList = (RecyclerView) rootView.findViewById(R.id.backup_list);
 
@@ -80,44 +78,41 @@ public class BackupFragment extends Fragment {
 
         new getBackupCount().execute();
 
-        return rootView;
-    }
+        FloatingActionButton backupBtn = (FloatingActionButton) rootView.findViewById(R.id.backup_button);
+        backupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.backup_dialog_title)
+                        .customView(R.layout.edittext_dialog, false)
+                        .positiveText(android.R.string.ok)
+                        .negativeText(android.R.string.cancel)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                EditText backupName = (EditText) dialog.findViewById(R.id.backup_name);
+                                if (backupName.getText().toString().contains(" ")) {
+                                    Toast.makeText(getActivity(), R.string.invalid_character, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    new Handler().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            swipeLayout.setRefreshing(true);
+                                        }
+                                    });
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
-
-    @OnClick(R.id.backup_button)
-    void backupKernel() {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.backup_dialog_title)
-                .customView(R.layout.edittext_dialog, false)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        super.onPositive(dialog);
-                        EditText backupName = (EditText) dialog.findViewById(R.id.backup_name);
-                        if (backupName.getText().toString().contains(" ")) {
-                            Toast.makeText(getActivity(), R.string.invalid_character, Toast.LENGTH_SHORT).show();
-                        } else {
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeLayout.setRefreshing(true);
+                                    new backupKernelTask(getActivity()).execute(backupName.getText().toString());
+                                    new getBackupCount().execute();
                                 }
-                            });
 
-                            new backupKernelTask(getActivity()).execute(backupName.getText().toString());
-                            new getBackupCount().execute();
-                        }
+                            }
+                        })
+                        .show();
+            }
+        });
 
-                    }
-                })
-                .show();
+        return rootView;
     }
 
     public static class backupKernelTask extends AsyncTask<String, Void, Void> {

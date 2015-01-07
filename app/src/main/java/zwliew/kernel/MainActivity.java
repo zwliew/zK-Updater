@@ -13,8 +13,6 @@ import android.util.Log;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.Helpers;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import zwliew.kernel.fragments.BackupFragment;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
@@ -28,25 +26,16 @@ import zwliew.kernel.util.Inventory;
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     public static IabHelper mHelper;
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        @Override
-        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-            if (mHelper == null)
-                return;
 
-            if (result.isFailure())
-                Log.d(Store.TAG, "Failed to query inventory: " + result);
-        }
-    };
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
+    private Toolbar toolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
@@ -58,7 +47,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     .title(getString(R.string.not_supported_title))
                     .content(getString(R.string.not_supported_desc))
                     .positiveText(android.R.string.ok)
-                    .icon(R.drawable.ic_warning)
+                    .icon(getResources().getDrawable(R.drawable.ic_warning))
                     .dismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
@@ -71,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     .title(getString(R.string.no_requirements_title))
                     .content(getString(R.string.no_requirements_desc))
                     .positiveText(android.R.string.ok)
-                    .icon(R.drawable.ic_warning)
+                    .icon(getResources().getDrawable(R.drawable.ic_warning))
                     .dismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
@@ -90,13 +79,22 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess())
+                if (!result.isSuccess()) {
                     Log.d(Store.TAG, "Problem setting up In-app Billing: " + result);
+
+                    return;
+                }
 
                 if (mHelper == null)
                     return;
 
-                mHelper.queryInventoryAsync(mGotInventoryListener);
+                mHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener() {
+                    @Override
+                    public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                        if (result.isFailure())
+                            Log.d(Store.TAG, "Failed to query inventory: " + result);
+                    }
+                });
             }
         });
     }

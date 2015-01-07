@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.CMDProcessor;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,28 +31,22 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
 
 public class UpdaterFragment extends Fragment {
-    @InjectView(R.id.updater_new_desc)
-    TextView newVerTV;
-    @InjectView(R.id.updater_swipe_container)
-    SwipeRefreshLayout swipeLayout;
-    Toolbar toolbar;
-
+    private Toolbar toolbar;
     private String latestRelease;
     private SharedPreferences.Editor editor;
+    private TextView newVerTV;
+    private SwipeRefreshLayout swipeLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_updater, container, false);
-        ButterKnife.inject(this, rootView);
 
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.updater_swipe_container);
         swipeLayout.setColorSchemeResources(R.color.green,
                 R.color.red,
                 R.color.blue,
@@ -104,60 +100,63 @@ public class UpdaterFragment extends Fragment {
             Toast.makeText(getActivity(),
                     R.string.no_connection, Toast.LENGTH_SHORT).show();
         }
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-    }
+        ImageButton logBtn = (ImageButton) rootView.findViewById(R.id.updater_new_log);
+        logBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    WebView webView = new WebView(getActivity());
+                    webView.loadUrl(Store.CHANGELOG_URL);
+                    webView.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            view.loadUrl(url);
 
-    @OnClick(R.id.updater_new_log)
-    void viewLog() {
-        NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            WebView webView = new WebView(getActivity());
-            webView.loadUrl(Store.CHANGELOG_URL);
-            webView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
+                            return true;
+                        }
+                    });
 
-                    return true;
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.updater_new_changelog)
+                            .customView(webView, false)
+                            .show();
+                } else {
+                    Toast.makeText(getActivity(),
+                            R.string.no_connection, Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
 
-            new MaterialDialog.Builder(getActivity())
-                    .title(R.string.updater_new_changelog)
-                    .customView(webView, false)
-                    .show();
-        } else {
-            Toast.makeText(getActivity(),
-                    R.string.no_connection, Toast.LENGTH_SHORT).show();
-        }
-    }
+        FloatingActionButton downloadBtn = (FloatingActionButton) rootView.findViewById(R.id.download_button);
+        downloadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-    @OnClick(R.id.download_button)
-    void downloadKernel() {
-        NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Store.DOWNLOAD_URL + latestRelease + Store.ZIP_ENDING))
+                            .setNotificationVisibility(
+                                    DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                    "zwliew_Kernel-" + Store.DEVICE_MODEL + "-" + latestRelease + Store.ZIP_ENDING);
 
-        if (networkInfo != null && networkInfo.isConnected()) {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(Store.DOWNLOAD_URL + latestRelease + Store.ZIP_ENDING))
-                    .setNotificationVisibility(
-                            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                            "zwliew_Kernel-" + Store.DEVICE_MODEL + "-" + latestRelease + Store.ZIP_ENDING);
+                    Store.downloadReference = ((DownloadManager) getActivity().
+                            getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
 
-            Store.downloadReference = ((DownloadManager) getActivity().
-                    getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
+                } else {
+                    Toast.makeText(getActivity(),
+                            R.string.no_connection, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        } else {
-            Toast.makeText(getActivity(),
-                    R.string.no_connection, Toast.LENGTH_SHORT).show();
-        }
+        newVerTV = (TextView) rootView.findViewById(R.id.updater_new_desc);
+
+        return rootView;
     }
 
     private class getURLContent extends AsyncTask<Void, Void, String> {
