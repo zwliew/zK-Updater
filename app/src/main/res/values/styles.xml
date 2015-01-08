@@ -12,8 +12,7 @@
     </style>
 
     <style name="TextAppearance.AppTheme.FloatLabel" parent="android:TextAppearance.Small">
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>
