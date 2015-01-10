@@ -38,7 +38,7 @@ public class Store {
     public static final String DOWNLOAD_URL = SERVER_URL + DEVICE_MODEL + "/releases/zwliew_Kernel-" + DEVICE_MODEL + "-";
 
     // TODO: Fix /storage/emulated/0 A.K.A. Environment.getExternalStorageDirectory() not working
-    public static final String BACKUP_DIR = "/storage/sdcard/zK_Updater/";
+    public static final String BACKUP_DIR = "/sdcard/zK_Updater/";
 
     public static long downloadReference;
 }
