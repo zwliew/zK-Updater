@@ -154,6 +154,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         break;
                 }
             }
-        }, 200);
+        }, 250);
     }
 }
