@@ -100,8 +100,7 @@
                 android:focusable="false"
                 android:paddingEnd="1dp"
                 android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:paddingStart="1dp" />
+                android:paddingRight="1dp" />
 
         </RelativeLayout>
 
@@ -146,8 +145,7 @@
                 android:focusable="false"
                 android:paddingEnd="1dp"
                 android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:paddingStart="1dp" />
+                android:paddingRight="1dp" />
 
         </RelativeLayout>
 
@@ -192,8 +190,7 @@
                 android:focusable="false"
                 android:paddingEnd="1dp"
                 android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:paddingStart="1dp" />
+                android:paddingRight="1dp" />
 
         </RelativeLayout>
 
