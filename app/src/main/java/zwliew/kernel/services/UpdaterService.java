@@ -100,8 +100,6 @@ public class UpdaterService extends IntentService {
                         Integer.valueOf(latestRelease.substring(1))).apply();
             }
         }
-
-
     }
 
     private class getKernelInfo extends AsyncTask<Void, Void, String> {

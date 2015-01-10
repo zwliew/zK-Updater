@@ -85,10 +85,16 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                                     new Thread(new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            // TODO: Add proper support for devices with modules
-                                                            CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
-                                                                    " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
-                                                                    Store.REBOOT_CMD);
+                                                            if (Store.DEVICE_MODEL.equals("ghost")) {
+                                                                // TODO: Add proper support for modules
+                                                                CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
+                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
+                                                                        Store.REBOOT_CMD);
+                                                            } else {
+                                                                CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
+                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
+                                                                        Store.REBOOT_CMD);
+                                                            }
                                                         }
                                                     }).start();
                                                 }
@@ -100,9 +106,14 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                                     new Thread(new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            // TODO: Add proper support for devices with modules
-                                                            CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
-                                                                    " of=/dev/block/platform/msm_sdcc.1/by-name/boot");
+                                                            if (Store.DEVICE_MODEL.equals("ghost")) {
+                                                                // TODO: Add proper support for modules
+                                                                CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
+                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot");
+                                                            } else {
+                                                                CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
+                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot");
+                                                            }
                                                         }
                                                     }).start();
                                                 }
