@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.CMDProcessor;
@@ -137,15 +136,11 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                                     super.onPositive(dialog);
 
                                                     EditText backupName = (EditText) dialog.findViewById(R.id.backup_name);
-                                                    if (backupName.getText().toString().contains(" ")) {
-                                                        Toast.makeText(itemView.getContext(), R.string.invalid_character, Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        File currentFile = new File(Store.BACKUP_DIR + backupTitle.getText().toString());
-                                                        File newFile = new File(Store.BACKUP_DIR + backupName.getText().toString() + ".img");
-                                                        currentFile.renameTo(newFile);
+                                                    File currentFile = new File(Store.BACKUP_DIR + backupTitle.getText().toString());
+                                                    File newFile = new File(Store.BACKUP_DIR + backupName.getText().toString().replace(" ", "_") + ".img");
+                                                    currentFile.renameTo(newFile);
 
-                                                        new BackupFragment.getBackupCount().execute();
-                                                    }
+                                                    new BackupFragment.getBackupCount().execute();
                                                 }
                                             })
                                             .show();

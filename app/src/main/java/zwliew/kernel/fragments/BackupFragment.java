@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.CMDProcessor;
@@ -95,20 +94,15 @@ public class BackupFragment extends Fragment {
                             public void onPositive(MaterialDialog dialog) {
                                 super.onPositive(dialog);
                                 EditText backupName = (EditText) dialog.findViewById(R.id.backup_name);
-                                if (backupName.getText().toString().contains(" ")) {
-                                    Toast.makeText(getActivity(), R.string.invalid_character, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    new Handler().post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            swipeLayout.setRefreshing(true);
-                                        }
-                                    });
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeLayout.setRefreshing(true);
+                                    }
+                                });
 
-                                    new backupKernelTask(getActivity()).execute(backupName.getText().toString());
-                                    new getBackupCount().execute();
-                                }
-
+                                new backupKernelTask(getActivity()).execute(backupName.getText().toString().replace(" ", "_"));
+                                new getBackupCount().execute();
                             }
                         })
                         .show();
