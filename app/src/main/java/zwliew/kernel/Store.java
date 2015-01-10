@@ -1,7 +1,6 @@
 package zwliew.kernel;
 
 import android.os.Build;
-import android.os.Environment;
 
 public class Store {
     public static final String PREFERENCES_FILE = "zwliew.kernel.my_app_settings";
@@ -38,7 +37,8 @@ public class Store {
     public static final String CHANGELOG_URL = SERVER_URL + DEVICE_MODEL + "/changelog.html";
     public static final String DOWNLOAD_URL = SERVER_URL + DEVICE_MODEL + "/releases/zwliew_Kernel-" + DEVICE_MODEL + "-";
 
-    public static final String BACKUP_DIR = Environment.getExternalStorageDirectory() + "/zK_Updater/";
+    // TODO: Fix /storage/emulated/0 A.K.A. Environment.getExternalStorageDirectory() not working
+    public static final String BACKUP_DIR = "/storage/sdcard/zK_Updater/";
 
     public static long downloadReference;
 }
