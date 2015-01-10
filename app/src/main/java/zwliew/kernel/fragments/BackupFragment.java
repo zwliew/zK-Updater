@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,6 +40,7 @@ public class BackupFragment extends Fragment {
     private static List<BackupItem> backupItemList = new ArrayList<>();
     private static BackupListAdapter adapter;
     private static SwipeRefreshLayout swipeLayout;
+    private static TextView backupCountTV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +65,7 @@ public class BackupFragment extends Fragment {
         });
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        backupCountTV = (TextView) rootView.findViewById(R.id.backup_subheader);
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.backup_swipe_container);
 
         swipeLayout.setColorSchemeResources(R.color.green,
@@ -183,10 +186,13 @@ public class BackupFragment extends Fragment {
         }
 
         protected void onPostExecute(Integer backupCount) {
-            if (latestFile != null)
+            if (latestFile != null) {
                 toolbar.setSubtitle("Latest backup: " + latestFile);
-            else
+                backupCountTV.setText(backupCount.toString() + " backups");
+            } else {
                 toolbar.setSubtitle("No backups found");
+                backupCountTV.setText(null);
+            }
 
             if (backupList != null)
                 backupList.setAdapter(adapter);

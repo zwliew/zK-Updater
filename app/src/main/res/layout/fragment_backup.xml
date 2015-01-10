@@ -14,10 +14,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/backup_subheader"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:text="@null"
+                android:textColor="@color/primary" />
+
             <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/backup_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="@id/backup_subheader"
+                android:layout_alignParentStart="@id/backup_subheader"
+                android:layout_below="@id/backup_subheader"
                 tools:context=".MainActivity" />
 
             <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"

@@ -9,6 +9,25 @@
         android:orientation="vertical"
         android:padding="8dp">
 
+        <TextView
+            android:id="@+id/about_author_title"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/about_author"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:background="#B6B6B6" />
+
         <LinearLayout
             android:id="@+id/about"
             android:layout_width="match_parent"
@@ -23,15 +42,7 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
-                android:text="@string/about_author" />
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/about_author_name"
-                android:textColor="@android:color/primary_text_light" />
+                android:text="@string/about_author_name" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Caption"
