@@ -1,6 +1,9 @@
 package zwliew.kernel.navigationdrawer;
 
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -70,9 +73,31 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
         if (mSelectedPosition == i || mTouchedPosition == i) {
             viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getResources().getColor(R.color.selected_gray));
+            viewHolder.textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.primary));
+            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(getColouredDrawable(mData.get(i).getDrawable(), viewHolder.itemView.getResources().getColor(R.color.primary)), null, null, null);
         } else {
             viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            viewHolder.textView.setTextColor(viewHolder.itemView.getResources().getColor(android.R.color.black));
+            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(getColouredDrawable(mData.get(i).getDrawable(), viewHolder.itemView.getResources().getColor(android.R.color.black)), null, null, null);
         }
+    }
+
+    private Drawable getColouredDrawable(Drawable _drawable, int iColor) {
+
+        int red = (iColor & 0xFF0000) / 0xFFFF;
+        int green = (iColor & 0xFF00) / 0xFF;
+        int blue = iColor & 0xFF;
+
+        float[] matrix = {0, 0, 0, 0, red
+                , 0, 0, 0, 0, green
+                , 0, 0, 0, 0, blue
+                , 0, 0, 0, 1, 0};
+
+        ColorFilter colorFilter = new ColorMatrixColorFilter(matrix);
+
+        _drawable.setColorFilter(colorFilter);
+
+        return _drawable;
     }
 
     private void touchPosition(int position) {

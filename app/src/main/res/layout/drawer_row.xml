@@ -5,6 +5,7 @@
 
     <TextView
         android:id="@+id/item_name"
+        style="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -13,7 +14,5 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:alpha="0.87"
         android:drawablePadding="30dp"
-        android:gravity="center_vertical"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:gravity="center_vertical" />
 </LinearLayout>
