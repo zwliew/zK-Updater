@@ -20,10 +20,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import zwliew.kernel.MainActivity;
 import zwliew.kernel.R;
 import zwliew.kernel.Store;
+import zwliew.kernel.billing.IabHelper;
+import zwliew.kernel.billing.IabResult;
+import zwliew.kernel.billing.Purchase;
 import zwliew.kernel.services.BootReceiver;
-import zwliew.kernel.util.IabHelper;
-import zwliew.kernel.util.IabResult;
-import zwliew.kernel.util.Purchase;
 
 public class SettingsFragment extends Fragment {
 

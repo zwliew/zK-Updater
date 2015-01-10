@@ -13,15 +13,15 @@ import android.util.Log;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androguide.cmdprocessor.Helpers;
 
+import zwliew.kernel.billing.IabHelper;
+import zwliew.kernel.billing.IabResult;
+import zwliew.kernel.billing.Inventory;
 import zwliew.kernel.fragments.BackupFragment;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
 import zwliew.kernel.navigationdrawer.NavigationDrawerCallbacks;
 import zwliew.kernel.navigationdrawer.NavigationDrawerFragment;
 import zwliew.kernel.services.BootReceiver;
-import zwliew.kernel.util.IabHelper;
-import zwliew.kernel.util.IabResult;
-import zwliew.kernel.util.Inventory;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
