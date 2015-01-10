@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -56,26 +55,24 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        final SwitchCompat autoCheckSwitch = (SwitchCompat) rootView.findViewById(R.id.auto_check);
-        final SwitchCompat autoFlashSwitch = (SwitchCompat) rootView.findViewById(R.id.auto_flash);
-        final SwitchCompat backupFlashSwitch = (SwitchCompat) rootView.findViewById(R.id.backup_flash);
+        final View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
                 Store.PREFERENCES_FILE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
+        final SwitchCompat autoCheckSwitch = (SwitchCompat) rootView.findViewById(R.id.auto_check);
+        final SwitchCompat autoFlashSwitch = (SwitchCompat) rootView.findViewById(R.id.auto_flash);
+        final SwitchCompat backupFlashSwitch = (SwitchCompat) rootView.findViewById(R.id.backup_flash);
         autoCheckSwitch.setChecked(sharedPreferences.getBoolean(Store.AUTO_CHECK, true));
         autoFlashSwitch.setChecked(sharedPreferences.getBoolean(Store.AUTO_FLASH, true));
         backupFlashSwitch.setChecked(sharedPreferences.getBoolean(Store.BACKUP_FLASH, true));
 
-        autoCheckSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        RelativeLayout autoCheckLayout = (RelativeLayout) rootView.findViewById(R.id.auto_check_layout);
+        autoCheckLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (autoCheckSwitch.isChecked())
-                    autoCheckSwitch.setChecked(false);
-                else
-                    autoCheckSwitch.setChecked(true);
+            public void onClick(View view) {
+                autoCheckSwitch.setChecked(!autoCheckSwitch.isChecked());
 
                 editor.putBoolean(Store.AUTO_CHECK, autoCheckSwitch.isChecked()).apply();
 
@@ -84,25 +81,21 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        autoFlashSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        RelativeLayout autoFlashLayout = (RelativeLayout) rootView.findViewById(R.id.auto_flash_layout);
+        autoFlashLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (autoFlashSwitch.isChecked())
-                    autoFlashSwitch.setChecked(false);
-                else
-                    autoFlashSwitch.setChecked(true);
+            public void onClick(View view) {
+                autoFlashSwitch.setChecked(!autoFlashSwitch.isChecked());
 
                 editor.putBoolean(Store.AUTO_FLASH, autoFlashSwitch.isChecked()).apply();
             }
         });
 
-        backupFlashSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        RelativeLayout backupFlashLayout = (RelativeLayout) rootView.findViewById(R.id.backup_flash_layout);
+        backupFlashLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (backupFlashSwitch.isChecked())
-                    backupFlashSwitch.setChecked(false);
-                else
-                    backupFlashSwitch.setChecked(true);
+            public void onClick(View view) {
+                backupFlashSwitch.setChecked(!backupFlashSwitch.isChecked());
 
                 editor.putBoolean(Store.BACKUP_FLASH, backupFlashSwitch.isChecked()).apply();
             }
