@@ -113,6 +113,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             mHelper.dispose();
 
         mHelper = null;
+
+
     }
 
     @Override
@@ -134,7 +136,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 .replace(R.id.container, new UpdaterFragment())
                                 .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.app_name);
-                        toolbar.setSubtitle(getString(R.string.updater_new_title) + ": " + getString(R.string.unknown_val));
+                        toolbar.setSubtitle("Current kernel: " + getString(R.string.unknown_val));
                         break;
                     case 1:
                         getFragmentManager().beginTransaction()
