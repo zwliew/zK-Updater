@@ -122,15 +122,15 @@ public class BackupFragment extends Fragment {
 
         @Override
         protected Void doInBackground(String... strings) {
-            if ("".equals(strings[0])) {
-                String kernel = "zwliew_Kernel-r" + String.valueOf(context.getSharedPreferences(
-                        Store.PREFERENCES_FILE, Context.MODE_PRIVATE).getInt(Store.CUR_KERNEL, 0));
+            String kernel = "".equals(strings[0]) ? "zwliew_Kernel-r" + String.valueOf(context.getSharedPreferences(
+                    Store.PREFERENCES_FILE, Context.MODE_PRIVATE).getInt(Store.CUR_KERNEL, 0)) : strings[0];
 
-                CMDProcessor.runSuCommand("dd if=/dev/block/platform/msm_sdcc.1/by-name/boot" +
-                        " of=" + Store.BACKUP_DIR + kernel + ".img");
+            if (Store.DEVICE_MODEL.equals("ghost")) {
+                CMDProcessor.runSuCommand("dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of="
+                        + Store.BACKUP_DIR + kernel + ".img" + "\n" + "cp -r /system/lib/modules " + Store.BACKUP_DIR + kernel);
             } else {
                 CMDProcessor.runSuCommand("dd if=/dev/block/platform/msm_sdcc.1/by-name/boot" +
-                        " of=" + Store.BACKUP_DIR + strings[0] + ".img");
+                        " of=" + Store.BACKUP_DIR + kernel + ".img");
             }
 
             return null;
@@ -182,9 +182,11 @@ public class BackupFragment extends Fragment {
         protected void onPostExecute(Integer backupCount) {
             if (latestFile != null) {
                 toolbar.setSubtitle("Latest backup: " + latestFile);
+                backupCountTV.setVisibility(View.VISIBLE);
                 backupCountTV.setText(backupCount.toString() + " backups");
             } else {
                 toolbar.setSubtitle("No backups found");
+                backupCountTV.setVisibility(View.GONE);
                 backupCountTV.setText(null);
             }
 

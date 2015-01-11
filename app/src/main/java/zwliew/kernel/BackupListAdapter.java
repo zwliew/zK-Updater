@@ -85,10 +85,11 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                                         @Override
                                                         public void run() {
                                                             if (Store.DEVICE_MODEL.equals("ghost")) {
-                                                                // TODO: Add proper support for modules
+                                                                // TODO: Fix chmod not working
                                                                 CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
-                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
-                                                                        Store.REBOOT_CMD);
+                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" + "mount -o rw,remount /system" + "\n" +
+                                                                        "cp -rp " + Store.BACKUP_DIR + backupTitle.getText().toString().replace(".img", "") + " /system/lib/modules" + "\n" +
+                                                                        "chmod -R 644 /system/lib/modules" + "\n" + "mount -o ro,remount /system" + "\n" + Store.REBOOT_CMD);
                                                             } else {
                                                                 CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
                                                                         " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" +
@@ -106,9 +107,11 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                                         @Override
                                                         public void run() {
                                                             if (Store.DEVICE_MODEL.equals("ghost")) {
-                                                                // TODO: Add proper support for modules
+                                                                // TODO: Fix chmod not working
                                                                 CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
-                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot");
+                                                                        " of=/dev/block/platform/msm_sdcc.1/by-name/boot" + "\n" + "mount -o rw,remount /system" + "\n" +
+                                                                        "cp -rp " + Store.BACKUP_DIR + backupTitle.getText().toString().replace(".img", "") + " /system/lib/modules" + "\n" +
+                                                                        "chmod -R 644 /system/lib/modules" + "\n" + "mount -o ro,remount /system");
                                                             } else {
                                                                 CMDProcessor.runSuCommand("dd if=" + Store.BACKUP_DIR + backupTitle.getText() +
                                                                         " of=/dev/block/platform/msm_sdcc.1/by-name/boot");
@@ -140,6 +143,12 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                                     File newFile = new File(Store.BACKUP_DIR + backupName.getText().toString().replace(" ", "_") + ".img");
                                                     currentFile.renameTo(newFile);
 
+                                                    if (Store.DEVICE_MODEL.equals("ghost")) {
+                                                        currentFile = new File(Store.BACKUP_DIR + backupTitle.getText().toString().replace(".img", ""));
+                                                        newFile = new File(Store.BACKUP_DIR + backupName.getText().toString().replace(" ", "_"));
+                                                        currentFile.renameTo(newFile);
+                                                    }
+
                                                     new BackupFragment.getBackupCount().execute();
                                                 }
                                             })
@@ -149,6 +158,11 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                                     File toDelete = new File(Store.BACKUP_DIR + backupTitle.getText().toString());
                                     toDelete.delete();
 
+                                    if (Store.DEVICE_MODEL.equals("ghost")) {
+                                        toDelete = new File(Store.BACKUP_DIR + backupTitle.getText().toString().replace(".img", ""));
+                                        delete(toDelete);
+                                    }
+
                                     new BackupFragment.getBackupCount().execute();
                                     break;
                                 default:
@@ -157,6 +171,18 @@ public class BackupListAdapter extends RecyclerView.Adapter<BackupListAdapter.Vi
                         }
                     })
                     .show();
+
+
+        }
+
+        void delete(File f) {
+            if (f.isDirectory()) {
+                for (File c : f.listFiles())
+                    delete(c);
+            }
+            f.delete();
         }
     }
 }
+
+
