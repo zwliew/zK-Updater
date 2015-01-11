@@ -71,7 +71,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                                                }
         );
 
-        if (mSelectedPosition == i || mTouchedPosition == i) {
+        if (mTouchedPosition == i) {
+            viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getResources().getColor(R.color.selected_gray));
+        } else if (mSelectedPosition == i) {
             viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getResources().getColor(R.color.selected_gray));
             viewHolder.textView.setTextColor(viewHolder.itemView.getResources().getColor(R.color.primary));
             viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(getColouredDrawable(mData.get(i).getDrawable(), viewHolder.itemView.getResources().getColor(R.color.primary)), null, null, null);
