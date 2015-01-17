@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/zwliew.kernel.iml" filepath="$PROJECT_DIR$/zwliew.kernel.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zwliew_KernelUpdater.iml" filepath="$PROJECT_DIR$/zwliew_KernelUpdater.iml" />
     </modules>
   </component>
 </project>
