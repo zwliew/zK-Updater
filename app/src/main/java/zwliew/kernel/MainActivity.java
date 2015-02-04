@@ -17,6 +17,7 @@ import zwliew.kernel.billing.IabHelper;
 import zwliew.kernel.billing.IabResult;
 import zwliew.kernel.billing.Inventory;
 import zwliew.kernel.fragments.BackupFragment;
+import zwliew.kernel.fragments.ProcessorFragment;
 import zwliew.kernel.fragments.SettingsFragment;
 import zwliew.kernel.fragments.UpdaterFragment;
 import zwliew.kernel.navigationdrawer.NavigationDrawerCallbacks;
@@ -151,6 +152,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 .commitAllowingStateLoss();
                         toolbar.setTitle(R.string.settings_title);
                         toolbar.setSubtitle(getString(R.string.settings_subtitle));
+                        break;
+                    case 3:
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new ProcessorFragment())
+                                .commitAllowingStateLoss();
+                        toolbar.setTitle(R.string.processor_title);
+                        toolbar.setSubtitle(getString(R.string.processor_subtitle));
                         break;
                     default:
                         break;

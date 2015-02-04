@@ -20,9 +20,11 @@
     <!-- Updater Fragment -->
     <!-- Newest version -->
     <string name="updater_new_title">Latest kernel</string>
-    <string name="updater_new_changelog">Changelog</string>
     <string name="updater_new_info">This is the latest available release of zwliew_Kernel for your device.</string>
 
+    <!-- Changelog -->
+    <string name="updater_changelog">Changelog</string>
+    <string name="updater_log_title">Changelog</string>
     <!-- Notification -->
     <string name="avail_release">New release available!</string>
 
@@ -92,4 +94,8 @@
 
     <string name="support_chooser_title">Support via</string>
     <string name="updater_support_donate">Donate</string>
+
+    <!-- Processor Fragment -->
+    <string name="processor_title">Processor</string>
+    <string name="processor_subtitle">Tune your CPU and GPU</string>
 </resources>

@@ -11,13 +11,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,8 +101,8 @@ public class UpdaterFragment extends Fragment {
                     R.string.no_connection, Toast.LENGTH_SHORT).show();
         }
 
-        ImageButton logBtn = (ImageButton) rootView.findViewById(R.id.updater_new_log);
-        logBtn.setOnClickListener(new View.OnClickListener() {
+        CardView logCV = (CardView) rootView.findViewById(R.id.updater_log_card_view);
+        logCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NetworkInfo networkInfo = ((ConnectivityManager) getActivity()
