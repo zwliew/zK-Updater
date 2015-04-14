@@ -101,7 +101,7 @@
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/ic_download"
+                android:src="@android:drawable/stat_sys_download_done"
                 fab:fab_colorNormal="@color/accent"
                 fab:fab_colorPressed="@color/accent_light"
                 fab:fab_colorRipple="@color/ripple" />
